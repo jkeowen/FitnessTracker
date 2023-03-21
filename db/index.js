@@ -47,7 +47,34 @@ const assignActivityToRoutine = async(routine_id, activity_id) => {
         RETURNING *;
     `, [routine_id, activity_id]);
     return assignemnt;
+};
+
+const addPersonalRecord = async(userId, activityId, record) =>{
+    try{
+        const { rows : [ personalRecord ] } = await client.query(`
+            INSERT INTO personal_records(user_id, activity_id, record)
+            VALUES($1, $2, $3)
+            RETURNING *;
+        `, [userId, activityId, record])
+        return personalRecord;
+    }catch(err){
+        throw err;
+    }
+};
+
+const addActivityToUser = async(userId, activityId) =>{
+    try{
+        const { rows : [ assignment ] } = await client.query(`
+            INSERT INTO users_activities(user_id, activity_id)
+            VALUES($1,$2)
+            RETURNING*;
+        `, [userId, activityId]);
+        return assignment;
+    }catch(err){
+        throw err;
+    }
 }
+
 
 module.exports={
     client,
@@ -55,5 +82,7 @@ module.exports={
     createActivity, 
     createRoutine,
     createExerciseType,
-    assignActivityToRoutine
+    assignActivityToRoutine,
+    addPersonalRecord, 
+    addActivityToUser
 }

@@ -4,11 +4,15 @@ const {
     createActivity, 
     createRoutine,
     createExerciseType, 
-    assignActivityToRoutine
-} = require('./db');
+    assignActivityToRoutine, 
+    addPersonalRecord,
+    addActivityToUser
+} = require('.');
 
 const dropTables = async() =>{
     await client.query(`
+        DROP TABLE IF EXISTS users_activities;
+        DROP TABLE IF EXISTS personal_records;
         DROP TABLE IF EXISTS users;
         DROP TABLE IF EXISTS routines_activities;
         DROP TABLE IF EXISTS activities;
@@ -47,6 +51,13 @@ const buildTables = async() =>{
                                     description TEXT NOT NULL);
         CREATE TABLE routines_activities(id_routines INTEGER REFERENCES routines(id),
                                           id_activities INTEGER REFERENCES activities(id));
+        CREATE TABLE personal_records(id SERIAL PRIMARY KEY, 
+                                    user_id INTEGER REFERENCES users(id),
+                                    activity_id INTEGER REFERENCES activities(id),
+                                    record INTEGER 
+                                    );
+        CREATE TABLE users_activities(user_id INTEGER REFERENCES users(id),
+                                      activity_id INTEGER REFERENCES activities(id));
     `)
 }
 
@@ -93,6 +104,18 @@ const assignActivityToRoutines = async() =>{
     console.log('FINISHED ASSIGNING ACTIVITIES TO ROUTINES');
 }
 
+const addPersonalRecords = async()=>{
+    console.log('ASSIGNING RECORDS');
+    await addPersonalRecord(1, 1, 315)
+    console.log('FINISHED ASSIGNING RECORDS');
+};
+
+const addActivityToUsers = async()=>{
+    console.log("ASSIGNING ACTIVITIES TO USERS");
+    await addActivityToUser(1,1);
+    console.log("FINISHED ASSIGNING ACTIVITIES TO USERS")
+}
+
 const testDb = async()=>{
     console.log('CONNECTING TO DB');
     client.connect();
@@ -103,6 +126,8 @@ const testDb = async()=>{
     await createActivities();
     await createRoutines();
     await assignActivityToRoutines();
+    await addPersonalRecords();
+    await addActivityToUsers();
     console.log('DISCONNECTING FROM DB');
     client.end();
     console.log('FINISHED DISCONNECTING FROM DB');

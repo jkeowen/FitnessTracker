@@ -1,12 +1,13 @@
+//const { client } = require('./db');
 const express = require('express');
-const apiRouter = express.Router();
-const userRouter = require('./users');
+const server = express();
+const apiRouter = require('./api');
 
-apiRouter.use(express.json()); 
-apiRouter.use('/users', userRouter);
-
+server.use('/api', apiRouter);
 
 
-
-
-module.exports = apiRouter;
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+ // client.connect();
+  console.log(`listening on port ${PORT}`);
+});

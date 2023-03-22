@@ -6,7 +6,9 @@ const {
     createExerciseType, 
     assignActivityToRoutine, 
     addPersonalRecord,
-    addActivityToUser
+    addActivityToUser,
+    getActivities, 
+    getSingleActivity
 } = require('.');
 
 const dropTables = async() =>{
@@ -145,6 +147,7 @@ const testDb = async()=>{
     await assignActivityToRoutines();
     await addPersonalRecords();
     await addActivityToUsers();
+    console.log(await getSingleActivity(1));
     console.log('DISCONNECTING FROM DB');
     client.end();
     console.log('FINISHED DISCONNECTING FROM DB');

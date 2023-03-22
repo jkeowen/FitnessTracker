@@ -94,6 +94,29 @@ const addActivityToUser = async(userId, activityId) =>{
     }
 }
 
+const getActivities = async() => {
+    try{
+    const {rows: activities} = await client.query(`
+        SELECT * FROM activities;
+    `)
+    return activities;
+    }catch(err){
+        throw err
+    }
+};
+
+const getSingleActivity = async(activityId) =>{
+    try{
+        const { rows: [activity] } = await client.query(`
+            SELECT * FROM activities
+            WHERE id = $1;
+        `, [activityId])
+        return activity;
+    }catch(err){
+        throw err;
+    }
+};
+
 
 module.exports={
     client,
@@ -103,5 +126,7 @@ module.exports={
     createExerciseType,
     assignActivityToRoutine,
     addPersonalRecord, 
-    addActivityToUser
+    addActivityToUser, 
+    getActivities,
+    getSingleActivity
 }

@@ -37,9 +37,9 @@ Routes:
     X Make more seed data
     -Make server functions 
         -Go for some easy early wins!:
-            -Get activities 
+            X Get activities 
             -Get personal records all and by user
-            -Get exercise types and since type
+            -Get exercise types and single type
         -Do slightly harder functions:
             -Get users, current user, other(add activities to them)
             -Get Routines

@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "test.js",
-  "scripts": {
-    
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jkeowen/FitnessTracker.git"
@@ -19,6 +17,7 @@
   "homepage": "https://github.com/jkeowen/FitnessTracker#readme",
   "dependencies": {
     "express": "^4.18.2",
+    "morgan": "^1.10.0",
     "pg": "^8.10.0"
   }
 }

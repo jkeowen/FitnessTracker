@@ -32,3 +32,16 @@ Routes:
     o	Create new relation: POST: /routines_activities 
     o	DELETE relation: DELETE: /routines_activities/:routines_activitiesId
 •	/users_activities 
+
+----3/22/23-----
+    X Make more seed data
+    -Make server functions 
+        -Go for some easy early wins!:
+            -Get activities 
+            -Get personal records all and by user
+            -Get exercise types and since type
+        -Do slightly harder functions:
+            -Get users, current user, other(add activities to them)
+            -Get Routines
+            -All Posts, Patch, Delete
+        -Login/Register

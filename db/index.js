@@ -120,7 +120,12 @@ const getSingleActivity = async(activityId) =>{
 const getPersonalRecords = async() => {
     try{
         const { rows: personalRecords } = await client.query(`
-            SELECT * FROM personal_records;
+            SELECT users.first_name, users.last_name, activities.name as activity, record 
+            FROM personal_records 
+            JOIN users 
+            ON personal_records.user_id = users.id
+            JOIN activities
+            ON personal_records.activity_id = activities.id;
         `)
         return personalRecords;
     } catch (err){
@@ -131,7 +136,12 @@ const getPersonalRecords = async() => {
 const getSingleUserRecords = async(userId) => {
     try{
         const { rows: singleUserRecords } = await client.query(`
-            SELECT * FROM personal_records
+        SELECT users.first_name, users.last_name, activities.name as activity, record 
+        FROM personal_records 
+        JOIN users 
+        ON personal_records.user_id = users.id
+        JOIN activities
+        ON personal_records.activity_id = activities.id
             WHERE user_id = $1;
         `, [userId]);
         return singleUserRecords;
@@ -143,14 +153,19 @@ const getSingleUserRecords = async(userId) => {
 const getRecordsByActivity = async(activityId) => {
     try{
         const { rows: records } = await client.query(`
-            SELECT * FROM personal_records
-            WHERE activity_id = $1;
+        SELECT users.first_name, users.last_name, activities.name as activity, record 
+        FROM personal_records 
+        JOIN users 
+        ON personal_records.user_id = users.id
+        JOIN activities
+        ON personal_records.activity_id = activities.id
+        WHERE activity_id = $1;
         `, [activityId]);
         return records;
     } catch (err) {
         throw err;
     }
-}
+};
 
 
 

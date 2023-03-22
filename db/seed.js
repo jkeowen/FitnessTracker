@@ -125,6 +125,7 @@ const assignActivityToRoutines = async() =>{
 const addPersonalRecords = async()=>{
     console.log('ASSIGNING RECORDS');
     await addPersonalRecord(1, 1, '315');
+    await addPersonalRecord(1,2,'13s')
     await addPersonalRecord(2, 2, '8s');
     await addPersonalRecord(3, 3, '3m')
     console.log('FINISHED ASSIGNING RECORDS');
@@ -152,9 +153,9 @@ const testDb = async()=>{
     await assignActivityToRoutines();
     await addPersonalRecords();
     await addActivityToUsers();
-    console.log(await getPersonalRecords());
-    console.log(await getSingleUserRecords(1));
-    console.log(await getRecordsByActivity(1));
+    // console.log(await getPersonalRecords());
+    // console.log(await getSingleUserRecords(1));
+    console.log(await getRecordsByActivity(2));
     console.log('DISCONNECTING FROM DB');
     client.end();
     console.log('FINISHED DISCONNECTING FROM DB');

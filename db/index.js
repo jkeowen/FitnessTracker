@@ -117,6 +117,42 @@ const getSingleActivity = async(activityId) =>{
     }
 };
 
+const getPersonalRecords = async() => {
+    try{
+        const { rows: personalRecords } = await client.query(`
+            SELECT * FROM personal_records;
+        `)
+        return personalRecords;
+    } catch (err){
+        throw err;
+    }
+};
+
+const getSingleUserRecords = async(userId) => {
+    try{
+        const { rows: singleUserRecords } = await client.query(`
+            SELECT * FROM personal_records
+            WHERE user_id = $1;
+        `, [userId]);
+        return singleUserRecords;
+    } catch (err){
+        throw err;
+    }
+};
+
+const getRecordsByActivity = async(activityId) => {
+    try{
+        const { rows: records } = await client.query(`
+            SELECT * FROM personal_records
+            WHERE activity_id = $1;
+        `, [activityId]);
+        return records;
+    } catch (err) {
+        throw err;
+    }
+}
+
+
 
 module.exports={
     client,
@@ -128,5 +164,8 @@ module.exports={
     addPersonalRecord, 
     addActivityToUser, 
     getActivities,
-    getSingleActivity
+    getSingleActivity,
+    getPersonalRecords,
+    getSingleUserRecords,
+    getRecordsByActivity
 }

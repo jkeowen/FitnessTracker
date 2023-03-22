@@ -14,14 +14,14 @@ const createUser = async(firstName, lastName, username, password, age, weight, e
     }
 };
 
-const createActivity = async(name, instructions, reps, sets, equipment, type_id, descritpion) =>{
+const createActivity = async(name, instructions, reps, sets, equipment, type_id, description) =>{
   
     try{
     const { rows: [ activity ] } = await client.query(`
         INSERT INTO activities(name, instructions, reps, sets, equipment, type_id, description)
         VALUES($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
-    `, [name, instructions, reps, sets, equipment, type_id, descritpion]);
+    `, [name, instructions, reps, sets, equipment, type_id, description]);
         return activity
     }catch(err){
         throw err;
@@ -167,7 +167,123 @@ const getRecordsByActivity = async(activityId) => {
     }
 };
 
+const getExerciseType = async() =>{
+    try{
 
+        const { rows: type } = await client.query(`
+            SELECT * FROM exercise_type;
+        `)
+        return type
+    }catch(err){
+        throw err
+    }
+}
+
+const getSingleExerciseType = async(typeId) =>{
+    try{
+
+        const { rows: type } = await client.query(`
+            SELECT * FROM exercise_type
+            WHERE id = $1;
+        `, [typeId])
+        return type
+    }catch(err){
+        throw err
+    }
+}
+
+const getUsers = async() =>{
+    try{
+    const { rows : users} = await client.query(`
+        SELECT * FROM users;
+    `);
+     const { rows : relations } = await client.query(`
+        SELECT activities.name,  users_activities.user_id
+        FROM activities
+        JOIN users_activities
+        ON activities.id = users_activities.activity_id;
+     `);
+     users.forEach((user)=>{
+        delete user.password;
+        user.activities = [];
+        for(let i = 0; i < relations.length; i++){
+            if(relations[i]. user_id === user.id){
+                user.activities.push(relations[i].name);
+            }
+        }
+     })
+     return users
+    }catch(err){
+        throw err;
+    }
+}
+
+const getSingleUser = async(userId) => {
+    try{
+        const { rows: [user] } = await client.query(`
+            SELECT * FROM users 
+            WHERE users.id = $1;
+        `,[userId]);
+            const { rows : relations } = await client.query(`
+            SELECT activities.name
+            FROM activities
+            JOIN users_activities
+            ON activities.id = users_activities.activity_id
+            WHERE users_activities.user_id = $1;
+        `, [userId])
+        user.activities = relations.map((relation)=> relation.name);
+        return user;
+    }catch(err){
+        throw err;
+    }
+};
+
+const getRoutines = async() => {
+	try{
+		const { rows: routines } = await client.query(`
+			SELECT * FROM routines;
+		`)
+		const { rows: relations } = await client.query(`
+			SELECT id_routines, activities.name
+			FROM routines_activities
+			JOIN activities 
+			ON routines_activities.id_activities = activities.id; 
+		`);
+
+		routines.forEach((routine)=>{
+			routine.activities = []
+			for(let i = 0; i < relations.length; i++){
+				if(relations[i].id_routines === routine.id){
+					routine.activities.push(relations[i].name);
+				}
+			}
+		} )
+
+		return routines;
+	}catch(err){
+		throw err;
+	}	
+};
+
+const getSingleRoutine = async( routineId ) =>{
+	try{
+		const { rows: [ routine ] } = await client.query(`
+			SELECT * FROM routines 
+			WHERE routines.id = $1;	
+		`, [routineId]);
+		const { rows: relations } = await client.query(`
+			SELECT activities.name
+			FROM routines_activities
+			JOIN activities 
+			ON routines_activities.id_activities = activities.id
+			WHERE routines_activities.id_routines = $1;
+		`, [routineId]);
+		routine.activities = relations.map((relation)=> relation.name);
+		return routine			
+	}catch(err){
+		throw err;
+	}
+}
 
 module.exports={
     client,
@@ -182,5 +298,11 @@ module.exports={
     getSingleActivity,
     getPersonalRecords,
     getSingleUserRecords,
-    getRecordsByActivity
+    getRecordsByActivity, 
+    getExerciseType,
+    getSingleExerciseType, 
+    getUsers,
+    getSingleUser, 
+		getRoutines,
+		getSingleRoutine
 }

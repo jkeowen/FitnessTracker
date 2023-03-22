@@ -39,9 +39,9 @@ Routes:
         -Go for some easy early wins!:
             X Get activities and single
             X Get personal records all and by user
-            -Get exercise types and single type
+            X Get exercise types and single type
         -Do slightly harder functions:
-            -Get users, current user, other(add activities to them)
-            -Get Routines
+            X Get users, current user, other(add activities to them)
+            X Get Routines
             -All Posts, Patch, Delete
         -Login/Register

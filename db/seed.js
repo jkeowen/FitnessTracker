@@ -12,6 +12,12 @@ const {
     getPersonalRecords, 
     getSingleUserRecords,
     getRecordsByActivity,
+    getExerciseType,
+    getSingleExerciseType,
+    getUsers,
+    getSingleUser,
+    getRoutines, 
+    getSingleRoutine
 
 
 } = require('.');
@@ -79,10 +85,10 @@ const rebuildTables = async() =>{
 
 const createUsers = async() =>{
     console.log('CREATING USERS');
-    await createUser('Pubs', 'Studly', 'heavyLifter25', 'Lift4Gains4Lyf', '32', '180', 'pStuds@exerciz.com');
-    await createUser('Flash', 'McSpeedy', 'quikboi222', 'ILUVRUNNING', '25', '110', 'speedz@exerciz.com');
-    await createUser('Cassandra', 'Zen', 'manifestYourDestiny9', 'EARTHmother', '22', '100', 'yogamomma@exerciz');
-    await createUser('Arnold', 'Flagstaff', 'ironBelly3', 'bunniesandkitties2!', '45', '220', 'DMMECATPICS@exerciz')
+    await createUser('Pubs', 'Studly', 'heavyLifter25', 'Lift4Gains4Lyf', '32', '180', 'pStuds@exerciz.com', true);
+    await createUser('Flash', 'McSpeedy', 'quikboi222', 'ILUVRUNNING', '25', '110', 'speedz@exerciz.com', true);
+    await createUser('Cassandra', 'Zen', 'manifestYourDestiny9', 'EARTHmother', '22', '100', 'yogamomma@exerciz', true);
+    await createUser('Arnold', 'Flagstaff', 'ironBelly3', 'bunniesandkitties2!', '45', '220', 'DMMECATPICS@exerciz', true)
     console.log('FINISHED CREATING USERS');
 };
 
@@ -92,6 +98,7 @@ const createActivities = async() =>{
     await createActivity('Sprints', 'Run fast for a short distance', 5, 5, 'Track, feet', 1, 'Run real fast, be explosive, focus on technique');
     await createActivity('Holding head underwater', 'See how long you can survive without oxygen', 40, 5, 'head, water bucket', 3, 'Try not to suffocate!');
     await createActivity('Yoga', 'Bendy bend', 1, 1, 'yoga mat', 4, 'bend and stuff');
+    await createActivity('Squats', 'Squat with bar and plates', 5, 5, 'bar and plates', 2, 'its a squat')
     console.log('FINISHED CREATING ACTIVITIES')
 };
 
@@ -106,8 +113,8 @@ const createExerciseTypes = async() =>{
 
 const createRoutines = async() =>{
     console.log('CREATING ROUTINES');
-    await createRoutine(0, 'SUPER CARDIO EXTREME', 'THIS WILL MAKE YOUR GD HEART EXPLODE', 1, true, true);
     await createRoutine(0, 'GET RIPPED', "LIFT SOME HEAVY STUFF", 2, true, true);
+    await createRoutine(0, 'SUPER CARDIO EXTREME', 'THIS WILL MAKE YOUR GD HEART EXPLODE', 1, true, true);
     await createRoutine(0, 'True Grit', 'True not to die', 3, true, true);
     await createRoutine(0, 'Transcendence', 'Transcend This Earthly Plane', 4, true, true);
     console.log('FINISHED CREATING ROUTINES');
@@ -119,6 +126,7 @@ const assignActivityToRoutines = async() =>{
     await assignActivityToRoutine(2,2);
     await assignActivityToRoutine(3,3);
     await assignActivityToRoutine(4,4)
+    await assignActivityToRoutine(1,5)
     console.log('FINISHED ASSIGNING ACTIVITIES TO ROUTINES');
 }
 
@@ -154,8 +162,8 @@ const testDb = async()=>{
     await addPersonalRecords();
     await addActivityToUsers();
     // console.log(await getPersonalRecords());
-    // console.log(await getSingleUserRecords(1));
-    console.log(await getRecordsByActivity(2));
+    // console.log(await getExerciseType());
+    console.log(await getSingleRoutine(1));
     console.log('DISCONNECTING FROM DB');
     client.end();
     console.log('FINISHED DISCONNECTING FROM DB');

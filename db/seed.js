@@ -1,5 +1,6 @@
+const client = require('./client')
+
 const {
-	client, 
 	createUser, 
 	createActivity, 
 	createRoutine,
@@ -18,8 +19,7 @@ const {
 	getSingleUser,
 	getRoutines, 
 	getSingleRoutine, 
-	addRoutineToUser
-
+	addRoutineToUser,
 
 } = require('.');
 
@@ -165,6 +165,7 @@ const addRoutinesToUsers = async() => {
 
 const testDb = async()=>{
 	console.log('CONNECTING TO DB');
+	console.log(client);
 	client.connect();
 	console.log("FINISHED CONNECTING");
 	await rebuildTables();
@@ -178,7 +179,7 @@ const testDb = async()=>{
 	await addRoutinesToUsers();
 	// console.log(await getPersonalRecords());
 	// console.log(await getExerciseType());
-	console.log(await getSingleRoutine(1));
+	console.log(await getSingleUser(1));
 	console.log('DISCONNECTING FROM DB');
 	client.end();
 	console.log('FINISHED DISCONNECTING FROM DB');

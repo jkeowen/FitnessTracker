@@ -17,7 +17,8 @@ const {
 	getUsers,
 	getSingleUser,
 	getRoutines, 
-	getSingleRoutine
+	getSingleRoutine, 
+	addRoutineToUser
 
 
 } = require('.');
@@ -25,6 +26,7 @@ const {
 const dropTables = async() =>{
 	await client.query(`
 		DROP TABLE IF EXISTS users_activities;
+		DROP TABLE IF EXISTS users_routines;
 		DROP TABLE IF EXISTS personal_records;
 		DROP TABLE IF EXISTS users;
 		DROP TABLE IF EXISTS routines_activities;
@@ -71,6 +73,8 @@ const buildTables = async() =>{
 															);
 	CREATE TABLE users_activities(user_id INTEGER REFERENCES users(id),
 																	activity_id INTEGER REFERENCES activities(id));
+	CREATE TABLE users_routines(user_id INTEGER REFERENCES users(id),
+																	routine_id INTEGER REFERENCES routines(id));
 	`)
 	}
 
@@ -149,6 +153,16 @@ const addActivityToUsers = async()=>{
 	console.log("FINISHED ASSIGNING ACTIVITIES TO USERS")
 }
 
+const addRoutinesToUsers = async() => {
+	console.log("ASSIGNING ROUTINES TO USERS");
+	await addRoutineToUser(1,1);
+	await addRoutineToUser(1,2);
+	await addRoutineToUser(2,2);
+	await addRoutineToUser(3,3);
+	await addRoutineToUser(4,4);
+	console.log("FINISHED ASSIGNING ROUTINES TO USERS");
+}
+
 const testDb = async()=>{
 	console.log('CONNECTING TO DB');
 	client.connect();
@@ -161,6 +175,7 @@ const testDb = async()=>{
 	await assignActivityToRoutines();
 	await addPersonalRecords();
 	await addActivityToUsers();
+	await addRoutinesToUsers();
 	// console.log(await getPersonalRecords());
 	// console.log(await getExerciseType());
 	console.log(await getSingleRoutine(1));

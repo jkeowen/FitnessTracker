@@ -1,0 +1,68 @@
+const client = require('./client');
+
+const createRoutine = async(creator_id, name, descritpion, typeId, isPublic, isActive)=>{
+	try{
+	const { rows : [ routine ]} = await client.query(
+			`
+					INSERT INTO routines(creator_id, name, description, type_id, is_public, is_active)
+					VALUES($1, $2, $3, $4, $5, $6)
+					RETURNING *;
+			`, [creator_id, name, descritpion, typeId, isPublic, isActive]);    
+			return routine
+	}catch(err){
+			throw err;
+	}
+};
+
+const getRoutines = async() => {
+	try{
+		const { rows: routines } = await client.query(`
+			SELECT * FROM routines;
+		`)
+		const { rows: relations } = await client.query(`
+			SELECT id_routines, activities.name
+			FROM routines_activities
+			JOIN activities 
+			ON routines_activities.id_activities = activities.id; 
+		`);
+
+		routines.forEach((routine)=>{
+			routine.activities = []
+			for(let i = 0; i < relations.length; i++){
+				if(relations[i].id_routines === routine.id){
+					routine.activities.push(relations[i].name);
+				}
+			}
+		} )
+
+		return routines;
+	}catch(err){
+		throw err;
+	}	
+};
+
+const getSingleRoutine = async( routineId ) =>{
+	try{
+		const { rows: [ routine ] } = await client.query(`
+			SELECT * FROM routines 
+			WHERE routines.id = $1;	
+		`, [routineId]);
+		const { rows: relations } = await client.query(`
+			SELECT activities.name
+			FROM routines_activities
+			JOIN activities 
+			ON routines_activities.id_activities = activities.id
+			WHERE routines_activities.id_routines = $1;
+		`, [routineId]);
+		routine.activities = relations.map((relation)=> relation.name);
+		return routine			
+	}catch(err){
+		throw err;
+	}
+}
+
+module.exports = {
+  createRoutine,
+  getRoutines,
+  getSingleRoutine,
+}

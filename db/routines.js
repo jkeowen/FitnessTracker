@@ -1,13 +1,13 @@
 const client = require('./client');
 
-const createRoutine = async(creator_id, name, descritpion, typeId, isPublic, isActive)=>{
+const createRoutine = async(creator_id, name, description, typeId, isPublic, isActive)=>{
 	try{
 	const { rows : [ routine ]} = await client.query(
 			`
 					INSERT INTO routines(creator_id, name, description, type_id, is_public, is_active)
 					VALUES($1, $2, $3, $4, $5, $6)
 					RETURNING *;
-			`, [creator_id, name, descritpion, typeId, isPublic, isActive]);    
+			`, [creator_id, name, description, typeId, isPublic, isActive]);    
 			return routine
 	}catch(err){
 			throw err;

@@ -1,28 +1,96 @@
 const express = require('express');
+const { getRoutines,
+        createRoutine,
+        updateRoutine,
+        deleteRoutine } = require('../db');
 const routinesRouter = express.Router();
 
 routinesRouter.get('/', async(req, res, next) => {
-  res.send('get routines placeholder')
+  const output ={
+    success: false,
+    error: null,
+    routines: null
+  }
+
+  try{
+    output.routines = await getRoutines()
+    output.success = true;
+  }catch(err){
+    output.error = err
+  }
+  res.send(output);
+
 });
 
 routinesRouter.post('/', async(req, res, next) => {
-  res.send('post new routine')
+  // const { creator_id, name, description, typeId, isPublic, isActive } = req.body;
+  const output ={
+    success: false,
+    error: null,
+    routine: null
+  }
+  try{
+    output.routine = await createRoutine(...Object.values(req.body))
+    output.success = true
+  }catch(err){
+    output.error = err;
+  }
+  
+  res.send(output)
 });
 
 routinesRouter.patch('/:routineId', async(req, res, next) => {
   const routineId = req.params.routineId;
-  res.send(`editing a routine at ${routineId}`)
+  const output = {
+    success: false,
+    error: null,
+    routine: null
+  }
+  try{
+    output.routine = await updateRoutine(routineId, req.body);
+    output.success = true;
+
+  }catch(err){
+    output.error = err;
+  }
+  res.send(output)
 });
 
 routinesRouter.delete('/:routineId', async(req, res, next) => {
   const routineId = req.params.routineId;
-  res.send(`delete ${routineId}`)
+  const output = {
+    success: false,
+    error: null,
+    routine: null
+  }
+
+try{
+  output.routine = await deleteRoutine(routineId);
+  output.success = true;
+}catch(err){
+  output.error = true;
+}
+  res.send(output)
 });
 
-routinesRouter.get('/:username', async(req, res, next) => {
-  const username = req.params.username;
-  res.send(username)
-});
+// routinesRouter.get('/:userId', async(req, res, next) => {
+//   const userId = req.params.userId;
+//   const output = {
+//     success: false,
+//     error: null,
+//     routines: null
+//   }
+
+//   try{
+
+//     output.routines = await 
+
+//   }catch(err){
+//     output.error = err
+//   }
+
+//   res.send(output)
+// });
 
 routinesRouter.post('/:routineId/activities', async(req, res, next) => {
   const routineId = req.params.routineId;

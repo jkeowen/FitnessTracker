@@ -170,7 +170,6 @@ const addRoutinesToUsers = async() => {
 
 const testDb = async()=>{
 	console.log('CONNECTING TO DB');
-	console.log(client);
 	client.connect();
 	console.log("FINISHED CONNECTING");
 	await rebuildTables();
@@ -184,7 +183,7 @@ const testDb = async()=>{
 	await addRoutinesToUsers();
 	// console.log(await getPersonalRecords());
 	// console.log(await getExerciseType());
-	// console.log(await editUser(1, {first_name: 'test', last_name: 'test'}));
+	// console.log(await updateRoutine(1, {name:"test"}));
 	console.log('DISCONNECTING FROM DB');
 	client.end();
 	console.log('FINISHED DISCONNECTING FROM DB');

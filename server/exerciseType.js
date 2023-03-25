@@ -17,13 +17,14 @@ exerciseTypeRouter.get('/', async(req, res, next) => {
   res.send(output)
 });
 
-exerciseTypeRouter.get('/typeId', async(req, res, next) => {
+exerciseTypeRouter.get('/:typeId', async(req, res, next) => {
   const typeId = req.params.typeId;
   const output = {
     success: false,
     error: null, 
     type: null,
   }
+  console.log(typeId)
   try{
     output.type = await getSingleExerciseType(typeId);
     output.success = true;

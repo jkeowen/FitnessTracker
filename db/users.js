@@ -92,6 +92,20 @@ const deleteUser = async (userId) => {
 	}
 };
 
+const editUser = async(userID, fields={})=>{
+	const setString = Object.keys(fields).map((key, index)=>`${key}=$${index + 2}`).join(', ');
+	try{
+		const { rows: [ updated ] } = await client.query(`
+			UPDATE users
+			SET ${setString}
+			WHERE id = $1
+			RETURNING*;
+		`,[userID, ...Object.values(fields)]);
+		return updated;
+	}catch(err){
+		throw err
+	}
+}
 
 
 module.exports = {
@@ -99,5 +113,6 @@ module.exports = {
   getUsers,
   getSingleUser,
 	deleteUser,
+	editUser
 
 }

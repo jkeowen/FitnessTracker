@@ -44,5 +44,6 @@ Routes:
             X Get users, current user, other(add activities to them)
             X Get Routines
             X All Posts, Patch, Delete 
-                -Seems like four functions as most posts are already made
+                X Seems like four functions as most posts are already made
+        -Plug in functions API
         -Login/Register

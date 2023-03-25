@@ -2,7 +2,9 @@ const e = require('express');
 const express = require('express');
 const activitiesRouter = express.Router();
 const { getActivities, 
-				getSingleActivity} = require('../db');
+				getSingleActivity, 
+				createActivity
+			} = require('../db');
 
 activitiesRouter.get('/', async(req, res, next) =>{
 	const output = {success: false,
@@ -20,7 +22,20 @@ activitiesRouter.get('/', async(req, res, next) =>{
 });
 
 activitiesRouter.post('/', async(req, res, next)=>{
-	res.send('Post activities placeholder');
+	const { name, instructions, reps, sets, equipment, type_id, description } = req.body
+	const output = {
+		success: false,
+		error: null,
+		newActivity: null
+	}
+	try{
+	const newActivity = await createActivity(name, instructions, reps, sets, equipment, type_id, description);
+	output.success = true;
+	output.newActivity = newActivity;
+	}catch(err){
+		output.error = err;
+	}
+	res.send(output);
 });
 
 activitiesRouter.patch('/:activityId', async(req, res, next)=>{

@@ -78,10 +78,26 @@ const getSingleUser = async(userId) => {
 	}
 };
 
+const deleteUser = async (userId) => {
+	try{
+		const { rows: removed } = await client.query(`
+		UPDATE users
+		SET is_active = false
+		WHERE id = $1
+		RETURNING *;
+		`, [userId])
+		return removed
+	} catch (err) {
+		throw err;
+	}
+};
+
 
 
 module.exports = {
   createUser,
   getUsers,
   getSingleUser,
+	deleteUser,
+
 }

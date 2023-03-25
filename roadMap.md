@@ -43,6 +43,6 @@ Routes:
         -Do slightly harder functions:
             X Get users, current user, other(add activities to them)
             X Get Routines
-            -All Posts, Patch, Delete 
+            X All Posts, Patch, Delete 
                 -Seems like four functions as most posts are already made
         -Login/Register

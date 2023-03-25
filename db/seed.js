@@ -20,6 +20,10 @@ const {
 	getRoutines, 
 	getSingleRoutine, 
 	addRoutineToUser,
+	deleteRoutine,
+	makePrivateRoutine,
+	updateRoutine,
+
 
 } = require('.');
 
@@ -179,7 +183,7 @@ const testDb = async()=>{
 	await addRoutinesToUsers();
 	// console.log(await getPersonalRecords());
 	// console.log(await getExerciseType());
-	console.log(await getSingleUser(1));
+	console.log(await updateRoutine(1, {name: 'test'}));
 	console.log('DISCONNECTING FROM DB');
 	client.end();
 	console.log('FINISHED DISCONNECTING FROM DB');

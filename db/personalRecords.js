@@ -63,6 +63,8 @@ const getPersonalRecords = async() => {
 	}
 };
 
+
+
 module.exports = {
   getRecordsByActivity,
   addPersonalRecord,

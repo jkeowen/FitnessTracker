@@ -59,10 +59,56 @@ const getSingleRoutine = async( routineId ) =>{
 	}catch(err){
 		throw err;
 	}
+};
+
+const deleteRoutine = async( routineId ) => {
+	try {
+		const { rows: [ removed ]} = await client.query(`
+		UPDATE routines 
+		SET is_active = false
+		WHERE id = $1
+		RETURNING *;
+		`, [routineId]);
+		return removed
+	} catch (err) {
+		throw err;
+	}
+}
+
+const makePrivateRoutine = async ( routineId ) => {
+	try {
+		const { rows : [ private ]} = await client.query(`
+		UPDATE routines 
+		SET is_public = false
+		WHERE id = $1
+		RETURNING *;
+		`, [routineId]);
+		return private
+	} catch (err) {
+		throw err;
+	}
+}
+
+const updateRoutine = async ( routineId, fields = {}) => {
+	const setString = Object.keys(fields).map((key, index) => `${key}=$${index + 2}`).join(', ');
+	try{
+		const { rows : [ updated ]} = await client.query(`
+		UPDATE routines 
+		SET ${setString} 
+		WHERE id = $1
+		RETURNING *;
+		`, [routineId, ...Object.values(fields)])
+		return updated
+	}catch (err) {
+		throw err; 
+	}
 }
 
 module.exports = {
   createRoutine,
   getRoutines,
   getSingleRoutine,
+	deleteRoutine,
+	makePrivateRoutine,
+	updateRoutine
 }

@@ -23,7 +23,6 @@ routinesRouter.get('/', async(req, res, next) => {
 });
 
 routinesRouter.post('/', async(req, res, next) => {
-  // const { creator_id, name, description, typeId, isPublic, isActive } = req.body;
   const output ={
     success: false,
     error: null,

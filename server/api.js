@@ -10,6 +10,7 @@ const usersActivitiesRouter = require('./usersActivities');
 const usersRoutinesRouter = require('./usersRoutines');
 
 apiRouter.use(express.json()); 
+
 apiRouter.use('/users', userRouter);
 apiRouter.use('/activities', activitiesRouter);
 apiRouter.use('/routines', routinesRouter);

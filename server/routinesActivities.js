@@ -9,7 +9,7 @@ routinesActivitiesRouter.post('/', async(req, res, next) => {
     relation: null
   }
   try{
-    output.routine = await assignActivityToRoutine(...Object.values(req.body));
+    output.relation = await assignActivityToRoutine(...Object.values(req.body));
     output.success = true;
   }catch(err){
     output.error = err;

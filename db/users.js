@@ -2,9 +2,10 @@ const client = require('./client');
 
 const createUser = async(firstName, lastName, username, password, age, weight, emailAddress, isActive) =>{
 	try{
+	const encryptedPassword = bcrypt.hash(password, 5)
 	const { rows: [ user ] } = await client.query(`
 			INSERT INTO users(first_name, last_name, username, password, age, weight, email_address, is_active)
-			VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+			VALUES($1, $2, $3, ${encryptedPassword}, $5, $6, $7, $8)
 			RETURNING *;
 	`, [firstName, lastName, username, password, age, weight, emailAddress, isActive]);
 	return user;

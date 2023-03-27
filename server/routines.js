@@ -72,24 +72,6 @@ try{
   res.send(output)
 });
 
-// routinesRouter.get('/:userId', async(req, res, next) => {
-//   const userId = req.params.userId;
-//   const output = {
-//     success: false,
-//     error: null,
-//     routines: null
-//   }
-
-//   try{
-
-//     output.routines = await 
-
-//   }catch(err){
-//     output.error = err
-//   }
-
-//   res.send(output)
-// });
 
 routinesRouter.post('/:routineId/activities', async(req, res, next) => {
   const routineId = req.params.routineId;

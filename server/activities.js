@@ -1,4 +1,3 @@
-const e = require('express');
 const express = require('express');
 const activitiesRouter = express.Router();
 const { getActivities, 
@@ -22,14 +21,13 @@ activitiesRouter.get('/', async(req, res, next) =>{
 });
 
 activitiesRouter.post('/', async(req, res, next)=>{
-	const { name, instructions, reps, sets, equipment, type_id, description } = req.body
 	const output = {
 		success: false,
 		error: null,
 		newActivity: null
 	}
 	try{
-	const newActivity = await createActivity(name, instructions, reps, sets, equipment, type_id, description);
+	const newActivity = await createActivity(...Object.values(req.body));
 	output.success = true;
 	output.newActivity = newActivity;
 	}catch(err){
@@ -57,10 +55,7 @@ activitiesRouter.get('/:activityId', async(req, res, next)=>{
 	res.send(output);
 })
 
-// activitiesRouter.get('/:activityId/routines', async(req, res, next)=>{
-// 	const activity_id = req.params.activityId;
-// 	res.send(`Routines of activityId ${activity_id} placeholder`);
-// });
+
 
 module.exports = activitiesRouter;
 

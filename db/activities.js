@@ -40,19 +40,6 @@ const getSingleActivity = async(activityId) =>{
 	}
 	};
 
-// const getActivityByRoutine = async(activityId) => {
-// 	try {
-// 		const {rows: [activity]} = await client.query(`
-// 		SELECT activities.name
-// 		FROM activities
-// 		JOIN routines_activites 
-// 		ON activities.id = routines_activities.id_activities 
-// 		WHERE routines_activities.id_routines = $1;
-// 		`, [activityId])
-
-// 	}
-// }
-
 module.exports = {
   createActivity,
   getActivities, 

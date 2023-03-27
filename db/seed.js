@@ -181,9 +181,6 @@ const testDb = async()=>{
 	await addPersonalRecords();
 	await addActivityToUsers();
 	await addRoutinesToUsers();
-	// console.log(await getPersonalRecords());
-	// console.log(await getExerciseType());
-	// console.log(await updateRoutine(1, {name:"test"}));
 	console.log('DISCONNECTING FROM DB');
 	client.end();
 	console.log('FINISHED DISCONNECTING FROM DB');

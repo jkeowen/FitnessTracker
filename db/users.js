@@ -81,6 +81,19 @@ const getSingleUser = async(userId) => {
 	}
 };
 
+const getUserByUsername = async(username) =>{
+	try{
+		const { rows : user } = await client.query(`
+			SELECT * 
+			FROM users
+			WHERE username = $1; 
+		`, [username]);
+		return user;
+	}catch(err){
+		throw err;
+	}
+}
+
 const deleteUser = async (userId) => {
 	try{
 		const { rows: removed } = await client.query(`
@@ -115,6 +128,7 @@ module.exports = {
   createUser,
   getUsers,
   getSingleUser,
+	getUserByUsername,
 	deleteUser,
 	editUser
 

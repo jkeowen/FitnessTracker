@@ -47,7 +47,7 @@ const buildTables = async() =>{
 											first_name VARCHAR(25) NOT NULL,
 											last_name VARCHAR(25) NOT NULL,
 											username VARCHAR(25) UNIQUE NOT NULL,
-											password VARCHAR(25) UNIQUE NOT NULL,
+											password VARCHAR(110) UNIQUE NOT NULL,
 											age INTEGER NOT NULL,
 											weight INTEGER NOT NULL,
 											email_address VARCHAR(25) NOT NULL,

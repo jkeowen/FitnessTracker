@@ -6,11 +6,12 @@ import InfoBox from "./InfoBox";
 const Dashboard = () =>{
 
   return(
-    <div id="dashboard">
-      <h1>DASHBOARD PLACEHOLDER</h1>
+    <div id="dashboard" className="d-flex flex-row m-3">
       <InfoBox />
+      <div className="d-flex flex-column align-items-center ml-2">
       <HightlightsBox />
       <Graph />
+      </div>
     </div>
   )
 }

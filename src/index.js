@@ -8,7 +8,7 @@ import Dashboard from "./components/Dashboard";
 const App = () => {
   console.log('test')
   return(
-    <div id="app">
+    <div id="app" className="d-flex flex-row">
       <SideNav />
       <Dashboard />
     </div>

@@ -4,8 +4,8 @@ import React from "react";
 const HightlightsBox = () =>{
 
   return(
-    <div id="hightlights-box">
-      <h1>HIGHTLIGHTSBOX PLACEHOLDER</h1>
+    <div id="hightlights-box" className="seagreen-bg mb-2 rounded">
+      
     </div>
   )
 };

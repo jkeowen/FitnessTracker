@@ -3,8 +3,7 @@ import React from "react";
 const Graph = () =>{
 
   return(
-    <div id="graph">
-      <h1>GRAPH PLACEHOLDER</h1>
+    <div id="graph" className="cream-bg rounded">
     </div>
   )
 };

@@ -4,11 +4,10 @@ const bcrypt = require('bcrypt');
 const createUser = async(firstName, lastName, username, password, age, weight, emailAddress, isActive) =>{
 	try{
 	const encryptedPassword =  await bcrypt.hash(password, 5);
-	console.log(encryptedPassword, await bcrypt.compare(password, encryptedPassword))
 	const { rows: [ user ] } = await client.query(`
 			INSERT INTO users(first_name, last_name, username, password, age, weight, email_address, is_active)
 			VALUES('${firstName}', '${lastName}', '${username}', '${encryptedPassword}', '${age}', '${weight}', '${emailAddress}', '${isActive}')
-			RETURNING *;
+			RETURNING first_name, last_name, username, age, weight, email_address, is_active;
 	`);
 	return user;
 	}catch(err){
@@ -52,13 +51,23 @@ const getUsers = async() =>{
 			throw err;
 	}
 }
-
+//add username and password
 const getSingleUser = async(userId) => {
+	//if(!username || !password) return 
 	try{
-		const { rows: [user] } = await client.query(`
-				SELECT * FROM users 
-				WHERE users.id = $1;
-		`,[userId]);
+		//const user = getUserByUserName(username)
+		//if(!user) return 
+		//const hashedPassword = user.password
+		//const matchPassword = bcrypt.compare(password, hashedPassword)
+		//if(!matchPassword) return 
+		//delete user.password
+		//return user
+		// const { rows: [user] } = await client.query(`
+		// 		SELECT * FROM users 
+		// 		WHERE users.id = $1;
+		// `,[userId]);
+		//change queries 
+		//add user.id 
 				const { rows : activitiesRelations } = await client.query(`
 				SELECT activities.name
 				FROM activities
@@ -66,16 +75,18 @@ const getSingleUser = async(userId) => {
 				ON activities.id = users_activities.activity_id
 				WHERE users_activities.user_id = $1;
 		`, [userId])
-		const { rows : routinesRelations } = await client.query(`
+			const { rows : routinesRelations } = await client.query(`
 				SELECT routines.name
 				FROM routines
 				JOIN users_routines
 				ON routines.id = users_routines.routine_id
 				WHERE users_routines.user_id = $1;
 		`, [userId]);
+	
+		delete user.password;
 		user.activities = activitiesRelations.map((relation)=> relation.name);
 		user.routines = routinesRelations.map((relation)=> relation.name);
-;		return user;
+		return user;
 }catch(err){
 		throw err;
 	}

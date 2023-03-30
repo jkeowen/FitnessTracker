@@ -3,14 +3,15 @@ import { createRoot } from 'react-dom/client';
 import { HashRouter, Routes, Route } from "react-router-dom";
 import SideNav from "./components/SideNav";
 import Dashboard from "./components/Dashboard";
-
+import Register from "./components/Register";
 
 const App = () => {
   console.log('test')
   return(
     <div id="app" className="d-flex flex-row">
       <SideNav />
-      <Dashboard />
+      <Register />
+      {/* <Dashboard /> */}
     </div>
   )
 };

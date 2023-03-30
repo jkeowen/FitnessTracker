@@ -4,7 +4,7 @@
   "description": "",
   "main": "test.js",
   "scripts": {
-    "build:dev": "webpack --mode=development",
+    "build:dev": "webpack -w --mode=development",
     "server": "node ./server/server",
     "server:dev": "nodemon ./server/server"
   },

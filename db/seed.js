@@ -16,7 +16,7 @@ const {
 	getExerciseType,
 	getSingleExerciseType,
 	getUsers,
-	getSingleUser,
+	getUserByUsername,
 	getRoutines, 
 	getSingleRoutine, 
 	addRoutineToUser,
@@ -181,7 +181,6 @@ const testDb = async()=>{
 	await addPersonalRecords();
 	await addActivityToUsers();
 	await addRoutinesToUsers();
-	console.log(await getActivities());
 	console.log('DISCONNECTING FROM DB');
 	client.end();
 	console.log('FINISHED DISCONNECTING FROM DB');

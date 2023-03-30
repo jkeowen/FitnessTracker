@@ -1,9 +1,9 @@
 const express = require('express');
 const userRouter = express.Router();
-const { getUsers, getSingleUser, getUserByUsername, createUser } = require('../db');
+const { getUsers, getAnd, createUser, getAndVerifyUserByUsername } = require('../db');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
-const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 userRouter.get('/:userId', async(req, res, next) => {
   const userId = req.params.userId;
@@ -38,52 +38,59 @@ userRouter.get('/me', async(req, res, next) => {
 });
 
 userRouter.post('/login', async(req, res, next) => {
-  const { username, password } = req.body;
-  if(!username || !password){
-    next({
-      name: "MissingCredentialsError",
-      message: "Please supply both a username  and password"
-    });
+  const output = {
+    success: false,
+    error: null,
+    user: null,
+    token: null
   }
   try{
-    const user =  await getUserByUsername(username);
-    const token = jwt.sign({message: "you're logged in!", "token": `${token}`}, JWT_SECRET)
-    if(user && bcrypt(password, user.password)){
-      res.send({message: "you're logged in!", "token": `${token}`});
-      res.end();
-    }else{
-      next({
-        name:'IncorrectCredentialsError',
-        message: 'Username or password is incorrect'
-      });
+    const user = await getAndVerifyUserByUsername(...Object.values(req.body));
+    if(!user){
+      output.error = "User of that combo does not exist";
     }
+    else{
+      output.user = user;
+      output.success = true;
+      const token = jwt.sign({
+        id: user.id
+      }, process.env.JWT_SECRET);
+      output.token = token
+    }    
+    res.send(output)
   }catch(err){
-    console.log(err);
-    next(err);
+    output.error = err;
+    res.send(output)
   }
 });
 
 userRouter.post('/register', async(req, res, next ) => {
-  const {firstName, lastName, username, password, age, weight, emailAddress, isActive} =  req.body;
+  console.log(process.env.JWT_SECRET)
+  const output ={
+    success: false,
+    error: null,
+    user: null,
+    token: null,
+  }
   try{
-    const _user = await getUserByUsername(username);
-    if(_user){
-      next({
-        name: 'UserExistsError',
-        message: 'A user by that username already exists'
-      });
-    }
     const user = await createUser(...Object.values(req.body));
-    const token = jwt.sign({
-      id: user.id,
-      username
-    }, process.env.JWT_SECRET);
-    res.send({
-      message: "thank you for signing up",
-      token
-    });
-  }catch({name, message}){
-    next({name, message})
+    if(!user){
+      output.error = "User Already Exists";
+    }
+    else{
+      output.user = user;
+      output.success = true;
+      const token = jwt.sign({
+        id: user.id
+      }, process.env.JWT_SECRET);
+      output.token = token
+    }
+    
+    
+    res.send(output)
+  }catch(err){
+    output.error = err;
+    res.send(output)
   }
 
 });

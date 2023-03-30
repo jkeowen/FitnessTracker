@@ -47,3 +47,5 @@ Routes:
                 X Seems like four functions as most posts are already made
         -Plug in functions API
         -Login/Register
+
+curl http://localhost:3000/api/users/register -H "Content-Type: application/json" -X POST -d '{"firstName": "test", "lastName": "test2", "username": "testUn", "password": "stars", "age": "3555", "weight": "2000", "emailAddress":"test", "isActive": "true"}'

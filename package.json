@@ -5,7 +5,8 @@
   "main": "test.js",
   "scripts": {
     "build:dev": "webpack --mode=development",
-    "server": "node ./server/server"
+    "server": "node ./server/server",
+    "server:dev": "nodemon ./server/server"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "@babel/preset-react": "^7.18.6",
     "babel-loader": "^9.1.2",
     "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",

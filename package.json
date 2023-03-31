@@ -6,7 +6,8 @@
   "scripts": {
     "build:dev": "webpack -w --mode=development",
     "server": "node ./server/server",
-    "server:dev": "nodemon ./server/server"
+    "server:dev": "nodemon ./server/server",
+    "db-seed": "node ./db/seed"
   },
   "repository": {
     "type": "git",

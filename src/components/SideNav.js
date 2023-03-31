@@ -4,11 +4,11 @@ import {Link} from "react-router-dom";
 const SideNav = () =>{
 
   return(
-    <div id="side-nav" className="bg-dark vh-100 px-3">
+    <div id="side-nav" className="bg-dark  px-3">
       <div >
         <div className="row grey-text">
           <div className="col-sm-auto">
-            <div className="d-flex flex-sm-column flex-nowrap bg-dark align-items-center sticky-top">
+            <div className="d-flex vh-100 flex-sm-column flex-nowrap bg-dark align-items-center sticky-top">
               <a href="/" className="d-block p-3 link-dark text-decoration-none" title="Test" data-bs-toggle="tooltip"
               data-bs-original-title="Icon-only">
                 <i className="bi-boostrap fs-1"></i>

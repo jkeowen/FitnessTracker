@@ -10,7 +10,6 @@ import Settings from "./components/Settings";
 import Login from "./components/Login";
 
 const App = () => {
-  console.log('test')
   return(
     <div id="app" className="d-flex flex-row">
       <SideNav />

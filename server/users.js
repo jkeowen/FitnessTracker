@@ -2,8 +2,10 @@ const express = require('express');
 const userRouter = express.Router();
 const { getUsers, getAnd, createUser, getAndVerifyUserByUsername } = require('../db');
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = process.env;
 require('dotenv').config();
+const bodyParser = require('body-parser');
+
+userRouter.use(bodyParser.json());
 
 userRouter.get('/:userId', async(req, res, next) => {
   const userId = req.params.userId;
@@ -65,7 +67,6 @@ userRouter.post('/login', async(req, res, next) => {
 });
 
 userRouter.post('/register', async(req, res, next ) => {
-  console.log(process.env.JWT_SECRET)
   const output ={
     success: false,
     error: null,

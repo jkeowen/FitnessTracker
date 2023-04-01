@@ -118,7 +118,9 @@ const editUser = async(userID, fields={})=>{
 
 const createUser = async(firstName, lastName, username, password, age, weight, emailAddress, isActive) =>{
 	try{
+		
 		const _user = await getUserByUsername(username);
+		
 		if(_user) return false;
 	const encryptedPassword =  await bcrypt.hash(password, 5);
 	const { rows: [ user ] } = await client.query(`

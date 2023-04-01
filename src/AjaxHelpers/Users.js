@@ -1,0 +1,16 @@
+const axios = require('axios');
+
+const registerNewUser = (firstName, lastName, username, password, age, weight, emailAddress) =>{
+  axios.post('/api/users/register',{
+    firstName, lastName, username, password, age, weight, emailAddress, isActive:true
+  })
+  .then((response)=>{
+    console.log(response.data);
+    if(response.data.success) window.localStorage.setItem("token", response.data.token);
+  })
+  .catch(console.err);
+}
+
+
+
+export default registerNewUser;

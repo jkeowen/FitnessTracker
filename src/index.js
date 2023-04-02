@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Routes, Route } from "react-router-dom";
 import SideNav from "./components/SideNav";
+import Redirecter from "./components/Redirecter";
 import Dashboard from "./components/Dashboard";
 import Register from "./components/Register";
 import Community from "./components/Community";
@@ -12,12 +13,13 @@ import Login from "./components/Login";
 const App = () => {
   return(
     <div id="app" className="d-flex flex-row">
-      <SideNav />
+      {/* <SideNav /> */}
       <Routes>
-        <Route path='/' element={<Register />} />
+        <Route path="/" element={<Redirecter />} />
+        <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/Profile' element={<Profile />} />
+        <Route path='/profile' element={<Profile />} />
         <Route path='/community' element={<Community />} />
         <Route path='/settings' element={<Settings />} />
 

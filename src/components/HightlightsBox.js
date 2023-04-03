@@ -9,8 +9,6 @@ const HightlightsBox = () =>{
     fetchAllRecords(setAllRecords);
   },[])
 
-  console.log(allRecords);
-
   return(
     <div id="hightlights-box" className="seagreen-bg mb-2 rounded">
       <h3></h3>

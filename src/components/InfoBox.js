@@ -7,8 +7,8 @@ import { faDumbbell, faMagnifyingGlass, faHeartPulse, faHandsHoldingCircle, faPe
 const InfoBox = () =>{
 
   library.add(faMagnifyingGlass,faDumbbell, faHandsHoldingCircle, faHeartPulse, faPersonHarassing)
-  const [ allActivites, setAllActivities ] = useState([]);
-  const [selected, setSelected] = useState(allActivites);
+  const [ allActivities, setAllActivities ] = useState([]);
+  const [selected, setSelected] = useState(allActivities);
 
   useEffect(()=>{
     fetchAllActivities(setAllActivities);
@@ -20,13 +20,13 @@ const InfoBox = () =>{
     <div id="info-box" >
       <div className="lavander-bg rounded">
         <div className="border border-dark rounded">
-          <span onClick={()=> setSelected(allActivites)}>Activities</span>
+          <span onClick={()=> setSelected(allActivities)}>Activities</span>
           <span>Routines</span>
         </div>
         <form className="mb-2">
           <input placeholder="search"/>
           <FontAwesomeIcon icon={faMagnifyingGlass} /></form>
-        {
+         { 
           selected.map((selection, index)=>{
             return(
               <div key={index} className="border border-dark rounded p-2 mb-2">

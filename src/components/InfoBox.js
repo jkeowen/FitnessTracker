@@ -1,38 +1,44 @@
 import React, {useState, useEffect} from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import fetchAllActivities from "../AjaxHelpers/Activities";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faDumbbell, faMagnifyingGlass, faHeartPulse, faHandsHoldingCircle, faPersonHarassing } from "@fortawesome/free-solid-svg-icons";
 
 const InfoBox = () =>{
 
+  library.add(faMagnifyingGlass,faDumbbell, faHandsHoldingCircle, faHeartPulse, faPersonHarassing)
   const [ allActivites, setAllActivities ] = useState([]);
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(allActivites);
 
   useEffect(()=>{
     fetchAllActivities(setAllActivities);
+    // setSelected(allActivites)
   },[])
-  console.log(allActivites);
+
 
   return(
-    <div id="info-box" className="h-50">
+    <div id="info-box" >
       <div className="lavander-bg rounded">
         <div className="border border-dark rounded">
-          <span>Activities</span>
+          <span onClick={()=> setSelected(allActivites)}>Activities</span>
           <span>Routines</span>
-          <span>Records</span>
         </div>
-        <form>
+        <form className="mb-2">
           <input placeholder="search"/>
-        </form>
+          <FontAwesomeIcon icon={faMagnifyingGlass} /></form>
         {
-          allActivites.map((activity, index)=>{
+          selected.map((selection, index)=>{
             return(
-              <div key={index} className="border border-dark rounded">
-                <div className="d-flex flex-row">
+              <div key={index} className="border border-dark rounded p-2 mb-2">
+                <div className="d-flex flex-row justify-content-between">
                   <div>
-                    <h3 className="border-bottom">{activity.name}</h3>
-                    <p>{activity.descritpion}</p>
+                    <h5 className="border-bottom border-3 border-dark text-center">{selection.name}</h5>
+                    <div >{selection.description}</div>
                   </div>
-                  <div>
-                    <h5>{activity.type}</h5>
+                  <div className="border-left border-dark d-flex flex-column align-items-center">
+                    <FontAwesomeIcon icon={selection.icon}/>
+                    <p>{selection.type}</p>
+                    
                   </div>
                 </div>
               </div>

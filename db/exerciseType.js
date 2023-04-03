@@ -1,12 +1,12 @@
 const client = require('./client');
 
-const createExerciseType = async(name) =>{
+const createExerciseType = async(name, icon) =>{
 	try{
 			const { rows : [ type ]} = await client.query(`
-					INSERT INTO exercise_type(name)
-					VALUES($1)
+					INSERT INTO exercise_type(name, icon)
+					VALUES($1, $2)
 					RETURNING *;
-			`, [name]);
+			`, [name, icon]);
 			return type;
 	}catch(err){
 			throw err;

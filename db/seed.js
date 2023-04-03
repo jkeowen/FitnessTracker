@@ -53,7 +53,8 @@ const buildTables = async() =>{
 											email_address VARCHAR(25) NOT NULL,
 											is_active BOOLEAN DEFAULT TRUE);
 	CREATE TABLE exercise_type( id SERIAL PRIMARY KEY,
-															name VARCHAR(25) NOT NULL UNIQUE);
+															name VARCHAR(25) NOT NULL UNIQUE,
+															icon VARCHAR(25));
 	CREATE TABLE routines( id SERIAL PRIMARY KEY,
 													creator_id INTEGER DEFAULT '0',
 													name VARCHAR(25),
@@ -113,10 +114,10 @@ const createActivities = async() =>{
 
 const createExerciseTypes = async() =>{
 	console.log("CREATING EXERCISE TYPES");
-	await createExerciseType('ZipZap');
-	await createExerciseType('Pumping Iron');
-	await createExerciseType('Grit');
-	await createExerciseType('Mind/Body')
+	await createExerciseType('ZipZap', 'heart-pulse');
+	await createExerciseType('Pumping Iron', 'dumbbell');
+	await createExerciseType('Grit', "person-harassing");
+	await createExerciseType('Mind/Body', 'hands-holding-circle')
 	console.log("FINISHED CREATING EXERCISE TYPES");
 }
 

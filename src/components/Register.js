@@ -43,6 +43,7 @@ const handleSubmit = async (event) => {
     if(window.localStorage.getItem('token')){
       navigate('/dashboard')
   }
+  else setRegistrationErrorMessage('User already exists!')
   }
  }
 
@@ -65,7 +66,7 @@ const clickHandler = () =>{
         <input onChange = {handleChange} placeholder = "Weight" value={weight} type='number' />
         <input onChange = {handleChange} placeholder = "Email Address" value={email} />
         <button type= 'submit' onClick={clickHandler} >Submit</button>
-        <h4 className='text-danger' >{registrationErrorMessage}</h4>
+        <p className='text-danger' >{registrationErrorMessage}</p>
         </form>
       </div>
   )

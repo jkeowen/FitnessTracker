@@ -16,7 +16,7 @@ const createActivity = async(name, instructions, reps, sets, equipment, type_id,
 const getActivities = async() => {
 	try{
 		const {rows: activities} = await client.query(`
-			SELECT activities.name, exercise_type.name as type, instructions, reps, sets, equipment, description FROM activities
+			SELECT activities.name, exercise_type.name as type, exercise_type.icon as icon, instructions, reps, sets, equipment, description FROM activities
 			JOIN exercise_type
 			ON activities.type_id = exercise_type.id;
 	`)

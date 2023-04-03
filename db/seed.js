@@ -60,6 +60,7 @@ const buildTables = async() =>{
 													name VARCHAR(25),
 													description TEXT NOT NULL,
 													type_id INTEGER REFERENCES exercise_type(id),
+													icon VARCHAR(25),
 													is_public BOOLEAN DEFAULT 'true',
 													is_active BOOLEAN DEFAULT 'true');
 	CREATE TABLE activities( id SERIAL PRIMARY KEY,

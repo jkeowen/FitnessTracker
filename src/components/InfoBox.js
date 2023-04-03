@@ -8,21 +8,21 @@ import { faDumbbell, faMagnifyingGlass, faHeartPulse, faHandsHoldingCircle, faPe
 const InfoBox = () =>{
 
   library.add(faMagnifyingGlass,faDumbbell, faHandsHoldingCircle, faHeartPulse, faPersonHarassing)
-  const [ allActivites, setAllActivities ] = useState([]);
-  const [selected, setSelected] = useState(allActivites);
+  const [ activites, setActivities ] = useState([]);
+  const [ routines, setRoutines] = useState([])
+  const [selected, setSelected] = useState([]);
 
   useEffect(()=>{
-    fetchAllActivities(setAllActivities);
-    fetchAllRoutines(setAllRoutines);
+    fetchAllActivities(setActivities);
+    fetchAllRoutines(setRoutines);
   },[])
-  console.log(allRoutines)
 
   return(
     <div id="info-box" >
       <div className="lavander-bg rounded">
         <div className="border border-dark rounded">
-          <span onClick={()=> setSelected(allActivites)}>Activities</span>
-          <span>Routines</span>
+          <span onClick={()=> setSelected(activites)}>Activities</span>
+          <span onClick={()=> setSelected(routines)} >Routines</span>
         </div>
         <form className="mb-2">
           <input placeholder="search"/>

@@ -1,13 +1,22 @@
 const client = require('./client');
 
-const createRoutine = async(creator_id, name, description, typeId, icon, isPublic, isActive)=>{
+const createRoutine = async(creator_id, name, description, typeId, isPublic, isActive)=>{
 	try{
 	const { rows : [ routine ]} = await client.query(
 			`
-					INSERT INTO routines(creator_id, name, description, type_id, icon, is_public, is_active)
-					VALUES($1, $2, $3, $4, $5, $6, $7)
-					RETURNING *;
-			`, [creator_id, name, description, typeId, icon, isPublic, isActive]);    
+				INSERT INTO routines(creator_id, name, description, type_id, is_public, is_active)
+				VALUES($1, $2, $3, $4, $5, $6)
+				RETURNING *;
+			`, [creator_id, name, description, typeId, isPublic, isActive]);    
+		const {rows: [ typeData ] } = await client.query(`
+			SELECT name, icon 
+			FROM exercise_type
+			WHERE exercise_type.id = $1;
+		`, [typeId]);
+			routine.type = typeData.name;
+			routine.icon = typeData.icon; 
+			routine.activities = [];
+			delete routine.type_id
 			return routine
 	}catch(err){
 			throw err;
@@ -37,7 +46,6 @@ const getRoutines = async() => {
 			JOIN routines
 			ON exercise_type.id =  routines.type_id
 		`)
-		console.log(typeInfo.length)
 		routines.forEach((routine)=>{
 			routine.activities = []
 			for(let i = 0; i < relations.length; i++){

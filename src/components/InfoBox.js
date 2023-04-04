@@ -10,18 +10,25 @@ const InfoBox = () =>{
 
   library.add(faMagnifyingGlass,faDumbbell, faHandsHoldingCircle, faHeartPulse, faPersonHarassing)
   const [ activities, setActivities ] = useState([]);
-  const [ routines, setRoutines] = useState([])
+  const [ routines, setRoutines] = useState([]);
   const [selected, setSelected] = useState([]);
 
   useEffect(()=>{
-    fetchAllActivities(setActivities);
     fetchAllRoutines(setRoutines);
+    fetchAllActivities(setActivities);
   },[])
-//need to add icon to create new activity 
-//when create new activity no icon is attached but at reload 
-//the get function is called which attatches all icon to activities
+
+  useEffect(()=>{
+    setSelected(routines)
+  }, [routines])
+  useEffect(()=>{
+    setSelected(activities);
+  }, [activities])
+
+ 
   return(
     <div id="info-box" >
+    
       <div className="lavander-bg rounded">
         <div className="d-flex justify-content-around border border-dark rounded mb-2">
           <div onClick={()=> setSelected(activities)}>Activities</div>
@@ -31,7 +38,8 @@ const InfoBox = () =>{
           <input className="no-border rounded bg-light" placeholder="search"/>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </form>
-        <CreateNew activities={activities} setActivities={setActivities}/>
+        <CreateNew  activities={activities} setActivities={setActivities} routines={routines} setRoutines={setRoutines} selected={selected} 
+          setSelected={setSelected}/>
          { 
           selected.map((selection, index)=>{
             return(

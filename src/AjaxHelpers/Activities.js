@@ -16,8 +16,6 @@ export const createNewActivity = (name, instructions, reps, sets, equipment, typ
     name, instructions, reps, sets, equipment, type_id, desciption
   })
   .then((response)=>{
-    console.log(currentValues)
-    console.log(response.data.newActivity)
     if(response.data.success) setter([...currentValues, response.data.newActivity])
   })
 }

@@ -31,11 +31,6 @@ const CreateNew = ({activities,
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // const handleSubmit = (event) =>{
-  //   event.preventDefault();
-    
-  // } 
-
   const handleAdd = () =>{
     if(selected === activities){
       if(nameInput !== '' && instructionsInput !== '' && repsInput !== '' && setsInput !== '' && equipmentInput !== ''

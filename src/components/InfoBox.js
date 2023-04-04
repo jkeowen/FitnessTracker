@@ -5,6 +5,7 @@ import fetchAllActivities from "../AjaxHelpers/Activities";
 import fetchAllRoutines from "../AjaxHelpers/Routines"
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faDumbbell, faMagnifyingGlass, faHeartPulse, faHandsHoldingCircle, faPersonHarassing } from "@fortawesome/free-solid-svg-icons";
+import Dropdown  from "react-bootstrap/Dropdown";
 
 const InfoBox = () =>{
 
@@ -56,7 +57,21 @@ const InfoBox = () =>{
                           <div>Sets: {selection.reps}</div>
                           <div>Instructions: {selection.instructions} </div>
                           
-                        </div> : null
+                        </div> : 
+                        <Dropdown>
+                          <Dropdown.Toggle>
+                            Activities
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                          {
+                            selection.activities.map((activity, index) =>{
+                              return(
+                                <Dropdown.Item>{activity}</Dropdown.Item>
+                              )
+                            })
+                          }
+                          </Dropdown.Menu>
+                        </Dropdown>
                     }
                   </div>
                   <div className="border-left border-dark d-flex flex-column justify-content-around align-items-center p-2">

@@ -1,6 +1,6 @@
 const express = require('express');
 const userRouter = express.Router();
-const { getUsers, getAnd, createUser, getAndVerifyUserByUsername } = require('../db');
+const { getUsers, createUser, getAndVerifyUserByUsername } = require('../db');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const bodyParser = require('body-parser');

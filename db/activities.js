@@ -7,7 +7,14 @@ const createActivity = async(name, instructions, reps, sets, equipment, type_id,
 			VALUES($1, $2, $3, $4, $5, $6, $7)
 			RETURNING *;
 	`, [name, instructions, reps, sets, equipment, type_id, description]);
-			return activity
+	const { rows: [typeData] } = await client.query(`
+			SELECT name, icon  
+			FROM exercise_type
+			WHERE exercise_type.id = $1;
+	`, [type_id])
+		activity.type = typeData.name;
+		activity.icon = typeData.icon;
+		return activity
 	}catch(err){
 			throw err;
 	};

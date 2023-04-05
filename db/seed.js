@@ -126,7 +126,7 @@ const createRoutines = async() =>{
 	console.log('CREATING ROUTINES');
 	await createRoutine(0, 'GET RIPPED', "LIFT SOME HEAVY STUFF", 2, true, true);
 	await createRoutine(0, 'SUPER CARDIO EXTREME', 'THIS WILL MAKE YOUR GD HEART EXPLODE', 1, true, true);
-	await createRoutine(0, 'True Grit', 'True not to die', 3, true, true);
+	await createRoutine(0, 'True Grit', 'Try not to die', 3, true, true);
 	await createRoutine(0, 'Transcendence', 'Transcend This Earthly Plane', 4, true, true);
 	console.log('FINISHED CREATING ROUTINES');
 }

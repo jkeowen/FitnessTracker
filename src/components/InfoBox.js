@@ -6,22 +6,24 @@ import fetchAllRoutines from "../AjaxHelpers/Routines"
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faDumbbell, faMagnifyingGlass, faHeartPulse, faHandsHoldingCircle, faPersonHarassing } from "@fortawesome/free-solid-svg-icons";
 import Dropdown  from "react-bootstrap/Dropdown";
+import Search from "./Search";
 
 const InfoBox = () =>{
 
   library.add(faMagnifyingGlass,faDumbbell, faHandsHoldingCircle, faHeartPulse, faPersonHarassing)
   const [ activities, setActivities ] = useState([]);
   const [ routines, setRoutines] = useState([]);
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState([{name : "placeholder"}]);
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(()=>{
     fetchAllRoutines(setRoutines);
     fetchAllActivities(setActivities);
   },[])
 
-  // useEffect(()=>{
-  //   setSelected(routines)
-  // }, [routines]);
+  useEffect(()=>{
+    setSelected(routines)
+  }, [routines]);
 
   useEffect(()=>{
     setSelected(activities);
@@ -35,17 +37,17 @@ const InfoBox = () =>{
           <div onClick={()=> setSelected(activities)}>Activities</div>
           <div onClick={()=> setSelected(routines)} >Routines</div>
         </div>
-        <form className="mb-2 bg-light border border-dark rounded p-1">
-          <input className="no-border rounded bg-light" placeholder="search"/>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </form>
+       < Search setSearchInput = {setSearchInput} selected = {selected} />
         <CreateNew  activities={activities} setActivities={setActivities} routines={routines} setRoutines={setRoutines} selected={selected} 
           setSelected={setSelected}/>
-          {
-            console.log('box', selected)
-          }
          { 
-          selected.map((selection, index)=>{
+          selected.filter((selection) => {
+            if(!searchInput) {
+              return selection;
+            } else if (selection["name"].toLowerCase().includes(searchInput.toLowerCase())){
+              return selection
+            }            
+          }).map((selection, index)=>{
             return(
               <div key={index} className=" rounded p-2 mb-2">
                 <div className="d-flex flex-row justify-content-between">
@@ -70,9 +72,6 @@ const InfoBox = () =>{
                             Activities
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {
-                              console.log(selection.activities)
-                            }
                           {
                             selection.activities.map((activity, index) =>{
                               return(

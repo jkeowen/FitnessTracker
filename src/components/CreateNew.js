@@ -37,7 +37,9 @@ const CreateNew = ({activities,
         && typeIdInput !== '' && descriptionInput !== ''){
       createNewActivity(nameInput, instructionsInput, repsInput, setsInput,
                   equipmentInput, typeIdInput, descriptionInput, setActivities, activities);
+                  console.log(activities, selected)
                   handleClose();
+                  console.log('Pop:', selected)
       }
       else setErrorMessage('Please finish filling out form')
       }

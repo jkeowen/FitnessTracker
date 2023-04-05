@@ -19,14 +19,14 @@ const InfoBox = () =>{
     fetchAllActivities(setActivities);
   },[])
 
-  useEffect(()=>{
-    setSelected(routines)
-  }, [routines])
+  // useEffect(()=>{
+  //   setSelected(routines)
+  // }, [routines]);
+
   useEffect(()=>{
     setSelected(activities);
   }, [activities])
 
- 
   return(
     <div id="info-box" >
     
@@ -41,6 +41,9 @@ const InfoBox = () =>{
         </form>
         <CreateNew  activities={activities} setActivities={setActivities} routines={routines} setRoutines={setRoutines} selected={selected} 
           setSelected={setSelected}/>
+          {
+            console.log('box', selected)
+          }
          { 
           selected.map((selection, index)=>{
             return(
@@ -49,6 +52,7 @@ const InfoBox = () =>{
                   <div>
                     <h5 className="border-bottom border-3 border-dark text-center">{selection.name}</h5>
                     <div >Description: {selection.description}</div>
+                    
                     {
                       selected === activities ? 
                         <div>
@@ -58,20 +62,29 @@ const InfoBox = () =>{
                           <div>Instructions: {selection.instructions} </div>
                           
                         </div> : 
+                        <div>
+                          {
+                            selection.activities ?
                         <Dropdown>
                           <Dropdown.Toggle>
                             Activities
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
+                            {
+                              console.log(selection.activities)
+                            }
                           {
                             selection.activities.map((activity, index) =>{
                               return(
-                                <Dropdown.Item>{activity}</Dropdown.Item>
+                                <Dropdown.Item key={index}>{activity}</Dropdown.Item>
                               )
                             })
                           }
                           </Dropdown.Menu>
                         </Dropdown>
+                        :null
+                      }
+                        </div>
                     }
                   </div>
                   <div className="border-left border-dark d-flex flex-column justify-content-around align-items-center p-2">

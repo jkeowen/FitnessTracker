@@ -1,8 +1,12 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 const { getRoutines,
         createRoutine,
         updateRoutine,
         deleteRoutine } = require('../db');
+const { json } = require('body-parser');
 const routinesRouter = express.Router();
 
 routinesRouter.get('/', async(req, res, next) => {
@@ -28,6 +32,9 @@ routinesRouter.post('/', async(req, res, next) => {
     error: null,
     routine: null
   }
+
+
+
   try{
     output.routine = await createRoutine(...Object.values(req.body))
     output.success = true

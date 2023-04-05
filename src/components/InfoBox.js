@@ -13,22 +13,24 @@ const InfoBox = () =>{
   library.add(faMagnifyingGlass,faDumbbell, faHandsHoldingCircle, faHeartPulse, faPersonHarassing)
   const [ activities, setActivities ] = useState([]);
   const [ routines, setRoutines] = useState([]);
-  const [selected, setSelected] = useState([{name : "placeholder"}]);
+  const [selected, setSelected] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(()=>{
-    fetchAllRoutines(setRoutines);
+    const routines = fetchAllRoutines(setRoutines);
+    setSelected(routines);
     fetchAllActivities(setActivities);
   },[])
-
-  useEffect(()=>{
-    setSelected(routines)
-  }, [routines]);
 
   useEffect(()=>{
     setSelected(activities);
   }, [activities])
 
+  useEffect(()=>{
+    setSelected(routines)
+  }, [routines]);
+
+ 
   return(
     <div id="info-box" >
     

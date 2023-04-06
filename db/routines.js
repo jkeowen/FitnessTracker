@@ -1,4 +1,5 @@
 const client = require('./client');
+const { getUsernames } = require('./users');
 
 const createRoutine = async(creator_id, name, description, typeId, isPublic, isActive)=>{
 	try{
@@ -39,14 +40,13 @@ const getRoutines = async() => {
 			JOIN activities 
 			ON routines_activities.id_activities = activities.id; 
 		`);
+			const usernames  = await getUsernames();
 
-		const { rows: typeInfo } = await client.query(`
-			SELECT exercise_type.name as name, exercise_type.icon as icon
-			FROM exercise_type 
-			JOIN routines
-			ON exercise_type.id =  routines.type_id
-		`)
 		routines.forEach((routine)=>{
+			routine.creator = null;
+			if(routine.creator_id > 0){
+				routine.creator = usernames[routine.creator_id -1 ].username;
+			}
 			routine.activities = []
 			for(let i = 0; i < relations.length; i++){
 				if(relations[i].id_routines === routine.id){

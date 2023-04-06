@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { useJwt } from "react-jwt";
 import CreateNew from "./CreateNew";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import fetchAllActivities from "../AjaxHelpers/Activities";
@@ -15,6 +16,8 @@ const InfoBox = () =>{
   const [ routines, setRoutines] = useState([]);
   const [selected, setSelected] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+
+  const {decoded} = useJwt(window.localStorage.getItem('token'));
 
   useEffect(()=>{
     const routines = fetchAllRoutines(setRoutines);
@@ -56,6 +59,10 @@ const InfoBox = () =>{
                   <div>
                     <h5 className="border-bottom border-3 border-dark text-center">{selection.name}</h5>
                     <div >Description: {selection.description}</div>
+                    {
+                      selection.creator_id !== 0  ? <div>created by: {selection.creator}</div>:
+                      null
+                    }
                     
                     {
                       selected === activities ? 
@@ -67,6 +74,9 @@ const InfoBox = () =>{
                           
                         </div> : 
                         <div>
+                          
+
+                          
                           {
                             selection.activities ?
                         <Dropdown>

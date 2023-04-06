@@ -55,6 +55,7 @@ userRouter.post('/login', async(req, res, next) => {
       output.user = user;
       output.success = true;
       const token = jwt.sign({
+        username: user.username,
         id: user.id
       }, process.env.JWT_SECRET);
       output.token = token
@@ -82,6 +83,7 @@ userRouter.post('/register', async(req, res, next ) => {
       output.user = user;
       output.success = true;
       const token = jwt.sign({
+        username: user.username,
         id: user.id
       }, process.env.JWT_SECRET);
       output.token = token

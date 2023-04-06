@@ -65,6 +65,7 @@ const buildTables = async() =>{
 													is_active BOOLEAN DEFAULT 'true');
 	CREATE TABLE activities( id SERIAL PRIMARY KEY,
 															name VARCHAR(25) UNIQUE NOT NULL,
+															creator_id INTEGER,
 															instructions TEXT NOT NULL,
 															reps VARCHAR(8) NOT NULL,
 															sets VARCHAR(8) NOT NULL,
@@ -105,11 +106,11 @@ const createUsers = async() =>{
 
 const createActivities = async() =>{
 	console.log('CREATING ACTIVITIES')
-	await createActivity('Bench Press', 'LIFT THE IRON PLACEHOLDER', 10, 5, 'Bench, Barbell', 2, 'Uhh its a bench press');
-	await createActivity('Sprints', 'Run fast for a short distance', 5, 5, 'Track, feet', 1, 'Run real fast, be explosive, focus on technique');
-	await createActivity('Holding head underwater', 'See how long you can survive without oxygen', 40, 5, 'head, water bucket', 3, 'Try not to suffocate!');
-	await createActivity('Yoga', 'Bendy bend', 1, 1, 'yoga mat', 4, 'bend and stuff');
-	await createActivity('Squats', 'Squat with bar and plates', 5, 5, 'bar and plates', 2, 'its a squat')
+	await createActivity('Bench Press', 0, 'LIFT THE IRON PLACEHOLDER', 10, 5, 'Bench, Barbell', 2, 'Uhh its a bench press');
+	await createActivity('Sprints', 0, 'Run fast for a short distance', 5, 5, 'Track, feet', 1, 'Run real fast, be explosive, focus on technique');
+	await createActivity('Holding head underwater', 3, 'See how long you can survive without oxygen', 40, 5, 'head, water bucket', 3, 'Try not to suffocate!');
+	await createActivity('Yoga', 0, 'Bendy bend', 1, 1, 'yoga mat', 4, 'bend and stuff');
+	await createActivity('Squats', 1, 'Squat with bar and plates', 5, 5, 'bar and plates', 2, 'its a squat')
 	console.log('FINISHED CREATING ACTIVITIES')
 };
 
@@ -128,6 +129,7 @@ const createRoutines = async() =>{
 	await createRoutine(0, 'SUPER CARDIO EXTREME', 'THIS WILL MAKE YOUR GD HEART EXPLODE', 1, true, true);
 	await createRoutine(0, 'True Grit', 'Try not to die', 3, true, true);
 	await createRoutine(0, 'Transcendence', 'Transcend This Earthly Plane', 4, true, true);
+	await createRoutine(1, 'Test', 'test', 1, true, true);
 	console.log('FINISHED CREATING ROUTINES');
 }
 
@@ -179,10 +181,12 @@ const testDb = async()=>{
 	await createExerciseTypes();
 	await createActivities();
 	await createRoutines();
+	(console.log(await getActivities()))
 	await assignActivityToRoutines();
 	await addPersonalRecords();
 	await addActivityToUsers();
 	await addRoutinesToUsers();
+	
 	console.log('DISCONNECTING FROM DB');
 	client.end();
 	console.log('FINISHED DISCONNECTING FROM DB');

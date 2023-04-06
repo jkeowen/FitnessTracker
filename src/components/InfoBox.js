@@ -16,6 +16,7 @@ const InfoBox = () =>{
   const [ routines, setRoutines] = useState([]);
   const [selected, setSelected] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("Search By")
 
   const {decoded} = useJwt(window.localStorage.getItem('token'));
 
@@ -23,6 +24,7 @@ const InfoBox = () =>{
     const routines = fetchAllRoutines(setRoutines);
     setSelected(routines);
     fetchAllActivities(setActivities);
+    setSearchTerm("Search By")
   },[])
 
   useEffect(()=>{
@@ -33,7 +35,7 @@ const InfoBox = () =>{
     setSelected(routines)
   }, [routines]);
 
- 
+ console.log(searchTerm)
   return(
     <div id="info-box" >
     
@@ -42,14 +44,14 @@ const InfoBox = () =>{
           <div onClick={()=> setSelected(activities)}>Activities</div>
           <div onClick={()=> setSelected(routines)} >Routines</div>
         </div>
-       < Search setSearchInput = {setSearchInput} selected = {selected} />
+       < Search setSearchInput = {setSearchInput} selected = {selected} searchTerm = {searchTerm} setSearchTerm = {setSearchTerm} />
         <CreateNew  activities={activities} setActivities={setActivities} routines={routines} setRoutines={setRoutines} selected={selected} 
           setSelected={setSelected}/>
          { 
           selected.filter((selection) => {
             if(!searchInput) {
               return selection;
-            } else if (selection["name"].toLowerCase().includes(searchInput.toLowerCase())){
+            } else if (selection[searchTerm].toLowerCase().startsWith(searchInput.toLowerCase())){
               return selection
             }            
           }).map((selection, index)=>{

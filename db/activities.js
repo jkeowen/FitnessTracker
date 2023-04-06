@@ -1,17 +1,18 @@
 const client = require('./client');
+const { getUsernames } = require('./users');
 
-const createActivity = async(name, instructions, reps, sets, equipment, type_id, description) =>{
+const createActivity = async(name, creatorId, instructions, reps, sets, equipment, type_id, description) =>{
 	try{
 	const { rows: [ activity ] } = await client.query(`
-			INSERT INTO activities(name, instructions, reps, sets, equipment, type_id, description)
-			VALUES($1, $2, $3, $4, $5, $6, $7)
+			INSERT INTO activities(name, creator_id, instructions, reps, sets, equipment, type_id, description)
+			VALUES($1, $2, $3, $4, $5, $6, $7, $8)
 			RETURNING *;
-	`, [name, instructions, reps, sets, equipment, type_id, description]);
+	`, [name, creatorId, instructions, reps, sets, equipment, type_id, description]);
 	const { rows: [typeData] } = await client.query(`
 			SELECT name, icon  
 			FROM exercise_type
 			WHERE exercise_type.id = $1;
-	`, [type_id])
+	`, [type_id]);
 		activity.type = typeData.name;
 		activity.icon = typeData.icon;
 		return activity
@@ -23,10 +24,17 @@ const createActivity = async(name, instructions, reps, sets, equipment, type_id,
 const getActivities = async() => {
 	try{
 		const {rows: activities} = await client.query(`
-			SELECT activities.name, exercise_type.name as type, exercise_type.icon as icon, instructions, reps, sets, equipment, description FROM activities
+			SELECT activities.name, creator_id, exercise_type.name as type, exercise_type.icon as icon, instructions, reps, sets, equipment, description FROM activities
 			JOIN exercise_type
 			ON activities.type_id = exercise_type.id;
-	`)
+	`);
+		const usernames = await getUsernames();
+		console.log(usernames)
+	activities.forEach((activity)=>{
+		activity.creator = null;
+		if( activity.creator_id > 0 )
+			activity.creator = usernames[activity.creator_id -1].username;
+	})
 	return activities;
 	}catch(err){
 			throw err

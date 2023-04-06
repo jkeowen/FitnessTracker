@@ -39,6 +39,18 @@ const getUsers = async() =>{
 	}
 }
 
+const getUsernames = async () =>{
+	try{
+	const { rows: usernames } = await client.query(`
+	SELECT id, username 
+	FROM users;
+`);
+return usernames
+}catch(err){
+	throw err
+}
+
+}
 
 const getAndVerifyUserByUsername = async(username, password) =>{
 	if(!username, !password) return false;
@@ -142,6 +154,7 @@ module.exports = {
 	getUserByUsername,
 	deleteUser,
 	editUser, 
-	getAndVerifyUserByUsername
+	getAndVerifyUserByUsername,
+	getUsernames
 
 }

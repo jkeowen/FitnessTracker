@@ -32,10 +32,9 @@ routinesRouter.post('/', async(req, res, next) => {
     error: null,
     routine: null
   }
-
-
-
+    console.log(req.body.creator_id)
   try{
+   
     output.routine = await createRoutine(...Object.values(req.body))
     output.success = true
   }catch(err){

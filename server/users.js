@@ -66,7 +66,6 @@ userRouter.post('/login', async(req, res, next) => {
     res.send(output)
   }
 });
-
 userRouter.post('/register', async(req, res, next ) => {
   const output ={
     success: false,

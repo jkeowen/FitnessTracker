@@ -40,13 +40,14 @@ const getRoutines = async() => {
 			JOIN activities 
 			ON routines_activities.id_activities = activities.id; 
 		`);
+		// console.log(relations)
 			const usernames  = await getUsernames();
-
 		routines.forEach((routine)=>{
 			routine.creator = null;
 			if(routine.creator_id > 0){
 				routine.creator = usernames[routine.creator_id -1 ].username;
 			}
+
 			routine.activities = []
 			for(let i = 0; i < relations.length; i++){
 				if(relations[i].id_routines === routine.id){
@@ -54,7 +55,9 @@ const getRoutines = async() => {
 				}
 			}
 		} )
+		console.log('hit')
 
+		console.log(routines)
 		return routines;
 	}catch(err){
 		throw err;

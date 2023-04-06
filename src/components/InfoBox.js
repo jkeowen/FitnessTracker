@@ -35,7 +35,7 @@ const InfoBox = () =>{
     setSelected(routines)
   }, [routines]);
 
- console.log(searchTerm)
+
   return(
     <div id="info-box" >
     

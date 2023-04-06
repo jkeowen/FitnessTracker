@@ -24,12 +24,11 @@ const createActivity = async(name, creatorId, instructions, reps, sets, equipmen
 const getActivities = async() => {
 	try{
 		const {rows: activities} = await client.query(`
-			SELECT activities.name, creator_id, exercise_type.name as type, exercise_type.icon as icon, instructions, reps, sets, equipment, description FROM activities
+			SELECT activities.id, activities.name, creator_id, exercise_type.name as type, exercise_type.icon as icon, instructions, reps, sets, equipment, description FROM activities
 			JOIN exercise_type
 			ON activities.type_id = exercise_type.id;
 	`);
 		const usernames = await getUsernames();
-		console.log(usernames)
 	activities.forEach((activity)=>{
 		activity.creator = null;
 		if( activity.creator_id > 0 )

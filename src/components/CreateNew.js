@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useJwt } from "react-jwt";
 import { createNewActivity } from "../AjaxHelpers/Activities";
 import { createNewRoutine } from "../AjaxHelpers/Routines";
+import makeActivityRoutinesRelation from "../AjaxHelpers/RoutinesActivities";
 import Button from "react-bootstrap/Button";
 import Modal from 'react-bootstrap/Modal';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -28,7 +29,9 @@ const CreateNew = ({activities,
   const [ descriptionInput, setDescriptionInput ] = useState('');
   const [ isPublicInput, setIsPublicInput ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
-
+  const [ addedActivitiesId, setAddedActivitiesId ] = useState([]);
+  const [ addedActivitiesNames, setAddedActivitiesNames ] = useState([]);
+ 
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -45,7 +48,11 @@ const CreateNew = ({activities,
       }
       else if(selected === routines) {
         if(nameInput !== '' && descriptionInput !== '' && typeIdInput !== '' && isPublicInput !== ''){
-        createNewRoutine(decodedToken.id, nameInput, descriptionInput, typeIdInput, isPublicInput, true, setRoutines, routines)
+          console.log(decodedToken.id)
+        createNewRoutine(decodedToken.id, nameInput, descriptionInput, typeIdInput, isPublicInput, true, setRoutines, routines, addedActivitiesNames);
+        for(let i = 0; i < addedActivitiesId.length; i++){
+          makeActivityRoutinesRelation(routines.length +1, addedActivitiesId[i]);
+        }
         handleClose();
         }
         else setErrorMessage('Please finish filling out form')
@@ -76,6 +83,11 @@ const CreateNew = ({activities,
     if(!isPublicInput) setIsPublicInput(true);
     else setIsPublicInput(false);
   }
+
+  const handleActivityAdd = (id, name) => {
+    setAddedActivitiesId([...addedActivitiesId, id]);
+    setAddedActivitiesNames([...addedActivitiesNames, name]);
+  }
   return(
     <div id='create-new' >
       <Button variant="primary" onClick={handleShow}>
@@ -92,9 +104,7 @@ const CreateNew = ({activities,
               selected === activities ?
               <div> 
                 <textarea placeholder="instructions" type="text" onChange={handleChange} ></textarea>
-                {
-                  console.log(decodedToken)
-                }
+                
                 <input placeholder="reps" type="number" onChange={handleChange} />
                 <input placeholder="sets" type="number" onChange={handleChange} />
                 <input placeholder="equipment" type="text" onChange={handleChange} />
@@ -105,6 +115,28 @@ const CreateNew = ({activities,
                 label='Public?'
                 onChange={isPublicHandler}
                 />
+                <Dropdown>
+                  <Dropdown.Toggle>
+                    Add Activities
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    
+                    {
+                      activities.filter((activity)=> !addedActivitiesId.includes(activity.id)).map((activity, index)=>{
+                         return <Dropdown.Item onClick={()=> handleActivityAdd(activity.id, activity.name)} key={index}>
+                                  {activity.name}
+                                </Dropdown.Item>
+                      })
+                    }
+                  </Dropdown.Menu>
+                </Dropdown>
+                <ul>
+                      {
+                        addedActivitiesNames.map((name)=>{
+                          return <li>{name}</li>
+                        })
+                      }
+                    </ul>
               </div>
             }
             <Dropdown>

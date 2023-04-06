@@ -129,7 +129,6 @@ const createRoutines = async() =>{
 	await createRoutine(0, 'SUPER CARDIO EXTREME', 'THIS WILL MAKE YOUR GD HEART EXPLODE', 1, true, true);
 	await createRoutine(0, 'True Grit', 'Try not to die', 3, true, true);
 	await createRoutine(0, 'Transcendence', 'Transcend This Earthly Plane', 4, true, true);
-	await createRoutine(1, 'Test', 'test', 1, true, true);
 	console.log('FINISHED CREATING ROUTINES');
 }
 
@@ -181,7 +180,6 @@ const testDb = async()=>{
 	await createExerciseTypes();
 	await createActivities();
 	await createRoutines();
-	(console.log(await getActivities()))
 	await assignActivityToRoutines();
 	await addPersonalRecords();
 	await addActivityToUsers();

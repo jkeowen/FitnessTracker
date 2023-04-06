@@ -6,7 +6,6 @@ const { getRoutines,
         createRoutine,
         updateRoutine,
         deleteRoutine } = require('../db');
-const { json } = require('body-parser');
 const routinesRouter = express.Router();
 
 routinesRouter.get('/', async(req, res, next) => {
@@ -32,9 +31,8 @@ routinesRouter.post('/', async(req, res, next) => {
     error: null,
     routine: null
   }
-    console.log(req.body.creator_id)
   try{
-   
+   console.log('hit')
     output.routine = await createRoutine(...Object.values(req.body))
     output.success = true
   }catch(err){

@@ -1,6 +1,9 @@
 const express = require('express');
 const userRouter = express.Router();
-const { getUsers, createUser, getAndVerifyUserByUsername } = require('../db');
+const { getUsers, 
+        createUser, 
+        getAndVerifyUserByUsername, 
+        getUserByUsername } = require('../db');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const bodyParser = require('body-parser');
@@ -24,14 +27,14 @@ userRouter.get('/:userId', async(req, res, next) => {
 })
 
 userRouter.get('/me', async(req, res, next) => {
-  const userId = req.params.userId;
+  const username = req.params.username;
   const output = {
     success: false,
     error: null,
     user: null
   }
   try{
-    output.user = await getSingleUser(userId);
+    output.user = await getUserByUsername(username);
     output.success = true;
   }catch(err){
     output.error = err;

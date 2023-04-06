@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { userLogin } from "../AjaxHelpers/Users";
 
-const Login = () =>{
+const Login = ({setLoginOut}) =>{
 
   const [ usernameInput, setUsernameInput ] = useState('');
   const [ passwordInput, setPasswordInput ] = useState('');
@@ -19,7 +19,10 @@ const Login = () =>{
     event.preventDefault();
     userLogin(usernameInput, passwordInput);
     if(usernameInput === '' || passwordInput === "") setErrorMessage('Missing Info')
-    else if(window.localStorage.getItem('token')) navigate('/dashboard')
+    else if(window.localStorage.getItem('token')) {
+      setLoginOut('Logout')
+      navigate('/dashboard')
+    }
     else setErrorMessage('Invalid Credentials')
   }
 

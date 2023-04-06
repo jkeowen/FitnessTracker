@@ -21,5 +21,15 @@ export const userLogin = (username, password) =>{
   })
 }
 
+export const getCurrentUser = (username, setter) =>{
+  axios.get('api/users/me',{
+    username
+  })
+  .then((response) =>{
+    console.log(response.data);
+    setter(response.data.user);
+  })
+}
+
 
 export default registerNewUser;

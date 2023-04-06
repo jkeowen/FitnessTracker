@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Routes, Route } from "react-router-dom";
 import SideNav from "./components/SideNav";
@@ -11,17 +11,18 @@ import Settings from "./components/Settings";
 import Login from "./components/Login";
 
 const App = () => {
+
+  const [ loginOut, setLoginOut ] = useState("");
+
+
   return(
     <div id="app" className="d-flex flex-sm-column flex-lg-row">
-      {
-        window.localStorage.getItem('token') ?
-        <SideNav />
-        : null
-      }
+     
+      <SideNav loginOut={loginOut} setLoginOut={setLoginOut}/>
       <Routes>
         <Route path="/" element={<Redirecter />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='/login' element={<Login loginOut={loginOut} setLoginOut={setLoginOut}/>} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/community' element={<Community />} />

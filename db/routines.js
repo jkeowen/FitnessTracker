@@ -55,9 +55,6 @@ const getRoutines = async() => {
 				}
 			}
 		} )
-		console.log('hit')
-
-		console.log(routines)
 		return routines;
 	}catch(err){
 		throw err;

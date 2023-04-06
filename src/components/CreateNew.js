@@ -132,8 +132,8 @@ const CreateNew = ({activities,
                 </Dropdown>
                 <ul>
                       {
-                        addedActivitiesNames.map((name)=>{
-                          return <li>{name}</li>
+                        addedActivitiesNames.map((name, index)=>{
+                          return <li key={index} >{name}</li>
                         })
                       }
                     </ul>

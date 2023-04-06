@@ -12,8 +12,12 @@ import Login from "./components/Login";
 
 const App = () => {
   return(
-    <div id="app" className="d-flex flex-row">
-      {/* <SideNav /> */}
+    <div id="app" className="d-flex flex-sm-column flex-lg-row">
+      {
+        window.localStorage.getItem('token') ?
+        <SideNav />
+        : null
+      }
       <Routes>
         <Route path="/" element={<Redirecter />} />
         <Route path='/register' element={<Register />} />

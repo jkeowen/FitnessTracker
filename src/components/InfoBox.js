@@ -37,9 +37,9 @@ const InfoBox = () =>{
 
 
   return(
-    <div id="info-box" >
+    <div id="info-box" className="info-box-height">
     
-      <div className="lavander-bg rounded">
+      <div className="lavander-bg rounded vh-50">
         <div className="d-flex justify-content-around border border-dark rounded mb-2">
           <div onClick={()=> setSelected(activities)}>Activities</div>
           <div onClick={()=> setSelected(routines)} >Routines</div>
@@ -47,6 +47,7 @@ const InfoBox = () =>{
        < Search setSearchInput = {setSearchInput} selected = {selected} searchTerm = {searchTerm} setSearchTerm = {setSearchTerm} />
         <CreateNew  activities={activities} setActivities={setActivities} routines={routines} setRoutines={setRoutines} selected={selected} 
           setSelected={setSelected}/>
+       <div className="scroll">
          { 
           selected.filter((selection) => {
             if(!searchInput) {
@@ -76,8 +77,6 @@ const InfoBox = () =>{
                           
                         </div> : 
                         <div>
-                          
-
                           
                           {
                             selection.activities ?
@@ -110,6 +109,7 @@ const InfoBox = () =>{
             )
           })
         }
+        </div>
       </div>
     </div>
   )

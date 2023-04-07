@@ -10,6 +10,26 @@ const bodyParser = require('body-parser');
 
 userRouter.use(bodyParser.json());
 
+
+userRouter.get('/me/:username', async(req, res, next) => {
+  username = req.params.username
+  console.log(username)
+  console.log('hit')
+  const output = {
+    success: false,
+    error: null,
+    user: null
+  }
+  try{
+    output.user = await getUserByUsername(username);
+    output.success = true;
+    delete output.user.password;
+  }catch(err){
+    output.error = err;
+  }
+  res.send(output);
+});
+
 userRouter.get('/:userId', async(req, res, next) => {
   const userId = req.params.userId;
   const output = {
@@ -26,21 +46,7 @@ userRouter.get('/:userId', async(req, res, next) => {
   res.send(output);
 })
 
-userRouter.get('/me', async(req, res, next) => {
-  const username = req.params.username;
-  const output = {
-    success: false,
-    error: null,
-    user: null
-  }
-  try{
-    output.user = await getUserByUsername(username);
-    output.success = true;
-  }catch(err){
-    output.error = err;
-  }
-  res.send(output);
-});
+
 
 userRouter.post('/login', async(req, res, next) => {
   const output = {
@@ -49,6 +55,7 @@ userRouter.post('/login', async(req, res, next) => {
     user: null,
     token: null
   }
+
   try{
     const user = await getAndVerifyUserByUsername(...Object.values(req.body));
     if(!user){
@@ -99,6 +106,7 @@ userRouter.post('/register', async(req, res, next ) => {
   }
 
 });
+
 
 
 userRouter.get('/', async(req, res, next) => {

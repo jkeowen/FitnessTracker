@@ -21,8 +21,8 @@ const App = () => {
       <SideNav loginOut={loginOut} setLoginOut={setLoginOut}/>
       <Routes>
         <Route path="/" element={<Redirecter />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login loginOut={loginOut} setLoginOut={setLoginOut}/>} />
+        <Route path='/register' element={<Register setLoginOut={setLoginOut} />} />
+        <Route path='/login' element={<Login setLoginOut={setLoginOut}/>} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/community' element={<Community />} />

@@ -1,35 +1,71 @@
-const axios = require('axios');
 
-const registerNewUser = (firstName, lastName, username, password, age, weight, emailAddress) =>{
-  axios.post('/api/users/register',{
-    firstName, lastName, username, password, age, weight, emailAddress, isActive:true
-  })
-  .then((response)=>{
-    console.log(response.data);
-    if(response.data.success) window.localStorage.setItem("token", response.data.token);
-  })
-  .catch(console.err);
+
+const registerNewUser = (firstName, lastName, username, password, age, weight, emailAddress, setLoginOut, navigator, errorSetter) =>{
+  fetch('/api/users/register',{
+    method:"POST",
+    headers:{
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      username,
+      password,
+      age,
+      weight,
+      emailAddress,
+      isActive: true
+    })
+  }).then(response => response.json())
+    .then(result =>{
+      errorSetter('')
+      if(result.success){
+        setLoginOut('Logout');
+        window.localStorage.setItem('token', result.token);
+        window.localStorage.setItem('username', username);
+        navigator('/dashboard');
+    }
+    else if(result.error) errorSetter(result.error);
+    else errorSetter('Registration Error!')
+    }).catch(console.error);
 }
 
-export const userLogin = (username, password) =>{
-  axios.post('api/users/login',{
-    username, password
-  })
-  .then((response)=>{
-    console.log(response.data);
-    if(response.data.success) window.localStorage.setItem('token', response.data.token);
-  })
+
+export const userLogin = async(username, password, setLoginOut, navigator, errorSetter) =>{
+  fetch('/api/users/login',{
+    method:"POST",
+    headers:{
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify({
+      username,
+      password
+    })
+  }).then(response => response.json())
+    .then(result =>{
+      if(result.success){
+        window.localStorage.setItem('token', result.token);
+        window.localStorage.setItem('username', username);
+        setLoginOut('Logout')
+        navigator('/')
+      }
+      else errorSetter('Invalid credentials')
+    }).catch(console.error);
 }
 
-export const getCurrentUser = (username, setter) =>{
-  axios.get('api/users/me',{
-    username
-  })
-  .then((response) =>{
-    console.log(response.data);
-    setter(response.data.user);
-  })
+
+export const getCurrentUser = (username ,setter) =>{
+  fetch(`/api/users/me/${username}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      // 'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+    }
+  }).then(response => response.json())
+    .then(result=> {
+      setter(result.user)})
 }
+
+
 
 
 export default registerNewUser;

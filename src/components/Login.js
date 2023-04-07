@@ -15,15 +15,20 @@ const Login = ({setLoginOut}) =>{
     else setPasswordInput(event.target.value);
   } 
 
+//   const handleLogin = async() =>{
+//     if(!window.localStorage.getItem('token')){ 
+//      setIsLoggedIn(userLogin(usernameInput, passwordInput))
+//   }
+// }
+
   const handleSubmit = (event) =>{
     event.preventDefault();
-    userLogin(usernameInput, passwordInput);
-    if(usernameInput === '' || passwordInput === "") setErrorMessage('Missing Info')
-    else if(window.localStorage.getItem('token')) {
-      setLoginOut('Logout')
-      navigate('/dashboard')
+    if(usernameInput === '' && passwordInput === '') setErrorMessage('Please enter username and password');
+    else if(usernameInput === '' && passwordInput !== '') setErrorMessage('Please enter username');
+    else if(usernameInput !== '' && passwordInput === '') setErrorMessage('Please enter password');
+    else if(usernameInput !== '' && passwordInput !== '' && !window.localStorage.getItem('token')){
+      userLogin(usernameInput, passwordInput, setLoginOut, navigate, setErrorMessage)
     }
-    else setErrorMessage('Invalid Credentials')
   }
 
   return(
@@ -32,7 +37,7 @@ const Login = ({setLoginOut}) =>{
       <form className="flex-center" onSubmit={handleSubmit}>
         <input placeholder="username" value={usernameInput} onChange={handleChange}/>
         <input placeholder="password" value={passwordInput} onChange={handleChange} />
-        <button>Submit</button>
+        <button >Submit</button>
         <p className="text-danger">{errorMessage}</p>
         <p><Link to='/register'>Register</Link> New Account</p>
       </form>

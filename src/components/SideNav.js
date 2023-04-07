@@ -13,7 +13,7 @@ const SideNav = ({loginOut, setLoginOut}) =>{
 
   const handleLoginOut = () =>{
     if(window.localStorage.getItem('token')){
-      window.localStorage.removeItem('token');
+      window.localStorage.clear();
       setLoginOut('Login');
     }
     navigate('/login')

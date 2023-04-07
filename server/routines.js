@@ -9,6 +9,7 @@ const { getRoutines,
 const routinesRouter = express.Router();
 
 routinesRouter.get('/', async(req, res, next) => {
+  console.log('hit')
   const output ={
     success: false,
     error: null,

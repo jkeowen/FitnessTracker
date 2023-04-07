@@ -64,22 +64,6 @@ const getAndVerifyUserByUsername = async(username, password) =>{
 		const matchPassword = await bcrypt.compare(password, user.password);
 		if(!matchPassword) {return false;}
 		delete user.password;
-		const { rows : activitiesRelations } = await client.query(`
-				SELECT activities.name
-				FROM activities
-				JOIN users_activities
-				ON activities.id = users_activities.activity_id
-				WHERE users_activities.user_id = ${user.id};
-		`)
-			const { rows : routinesRelations } = await client.query(`
-				SELECT routines.name
-				FROM routines
-				JOIN users_routines
-				ON routines.id = users_routines.routine_id
-				WHERE users_routines.user_id = ${user.id};
-		`,);
-		user.activities = activitiesRelations.map((relation)=> relation.name);
-		user.routines = routinesRelations.map((relation)=> relation.name);
 		return user;
 	}catch(err){
 		throw err;
@@ -92,6 +76,22 @@ const getUserByUsername = async( username ) =>{
 			SELECT * FROM users 
 			WHERE username = $1;
 		`, [username]);
+		const { rows : activitiesRelations } = await client.query(`
+		SELECT activities.name
+		FROM activities
+		JOIN users_activities
+		ON activities.id = users_activities.activity_id
+		WHERE users_activities.user_id = ${user.id};
+`)
+	const { rows : routinesRelations } = await client.query(`
+		SELECT routines.name
+		FROM routines
+		JOIN users_routines
+		ON routines.id = users_routines.routine_id
+		WHERE users_routines.user_id = ${user.id};
+`,);
+user.activities = activitiesRelations.map((relation)=> relation.name);
+user.routines = routinesRelations.map((relation)=> relation.name);
 		return user;
 	}catch(err){
 		throw err;

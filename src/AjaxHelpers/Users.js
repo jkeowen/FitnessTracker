@@ -1,4 +1,3 @@
-const axios = require('axios');
 
 
 const registerNewUser = (firstName, lastName, username, password, age, weight, emailAddress, setLoginOut, navigator, errorSetter) =>{
@@ -31,16 +30,6 @@ const registerNewUser = (firstName, lastName, username, password, age, weight, e
     }).catch(console.error);
 }
 
-// const registerNewUser = (firstName, lastName, username, password, age, weight, emailAddress) =>{
-//   axios.post('/api/users/register',{
-//     firstName, lastName, username, password, age, weight, emailAddress, isActive:true
-//   })
-//   .then((response)=>{
-//     console.log(response.data);
-//     if(response.data.success) window.localStorage.setItem("token", response.data.token);
-//   })
-//   .catch(console.err);
-// }
 
 export const userLogin = async(username, password, setLoginOut, navigator, errorSetter) =>{
   fetch('/api/users/login',{
@@ -65,16 +54,18 @@ export const userLogin = async(username, password, setLoginOut, navigator, error
 }
 
 
-
-export const getCurrentUser = (username, setter) =>{
-  axios.get('api/users/me',{
-    username
-  })
-  .then((response) =>{
-    console.log(response.data);
-    setter(response.data.user);
-  })
+export const getCurrentUser = (username ,setter) =>{
+  fetch(`/api/users/me/${username}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      // 'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+    }
+  }).then(response => response.json())
+    .then(result=> {
+      setter(result.user)})
 }
+
+
 
 
 export default registerNewUser;

@@ -49,6 +49,7 @@ userRouter.post('/login', async(req, res, next) => {
     user: null,
     token: null
   }
+
   try{
     const user = await getAndVerifyUserByUsername(...Object.values(req.body));
     if(!user){
@@ -70,6 +71,7 @@ userRouter.post('/login', async(req, res, next) => {
   }
 });
 userRouter.post('/register', async(req, res, next ) => {
+  console.log(req.body)
   const output ={
     success: false,
     error: null,

@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import { useJwt } from "react-jwt";
 import CreateNew from "./CreateNew";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import fetchAllActivities from "../AjaxHelpers/Activities";
@@ -18,7 +17,6 @@ const InfoBox = () =>{
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("Search By")
 
-  const {decoded} = useJwt(window.localStorage.getItem('token'));
 
   useEffect(()=>{
     const routines = fetchAllRoutines(setRoutines);
@@ -45,8 +43,11 @@ const InfoBox = () =>{
           <div onClick={()=> setSelected(routines)} >Routines</div>
         </div>
        < Search setSearchInput = {setSearchInput} selected = {selected} searchTerm = {searchTerm} setSearchTerm = {setSearchTerm} />
-        <CreateNew  activities={activities} setActivities={setActivities} routines={routines} setRoutines={setRoutines} selected={selected} 
-          setSelected={setSelected}/>
+        {
+          window.localStorage.getItem('token') ? 
+          <CreateNew  activities={activities} setActivities={setActivities} routines={routines} setRoutines={setRoutines} selected={selected} 
+          setSelected={setSelected}/> : null
+        }
        <div className="scroll">
          { 
           selected.filter((selection) => {

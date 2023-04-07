@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import registerNewUser from '../AjaxHelpers/Users';
 
 
-const Register = () => {
+const Register = ({setLoginOut}) => {
 
 const [firstName, setFirstName] = useState('')
 const [lastName, setLastName] = useState('')
@@ -13,6 +13,7 @@ const [email, setEmail] = useState('')
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 const [confirmPassword, setConfirmPassword] = useState('');
+// const [ passwordMessage, setPasswordMessage ] = useState('')
 const [registrationErrorMessage, setRegistrationErrorMessage] = useState('');
 
 const navigate = useNavigate();
@@ -28,27 +29,20 @@ const handleChange = (event) => {
   else setEmail(event.target.value)
 }
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  if(password !== confirmPassword){
-    setRegistrationErrorMessage('Passwords do not match')
-  }
-  else if(firstName ==='' || lastName ==='' || username==='' || password ==='' || confirmPassword==='' ||
-          age === '' || weight === '' || email === ''){
-            setRegistrationErrorMessage('Please finish filling out registration form');
-          }
+const handleSubmit = (event) => {
   
-  else {
-    registerNewUser(firstName, lastName, username, password, age, weight, email)
-    if(window.localStorage.getItem('token')){
-      navigate('/dashboard')
+  event.preventDefault();
+    if(firstName === '' || lastName === "" || age === '' || username === '' || 
+       password === '' || confirmPassword === '' || email === '' || weight === '') setRegistrationErrorMessage('Please finish filling out registration form')
+    else if(password !== confirmPassword) setRegistrationErrorMessage('Passwords do not match')
+    else if(firstName !== '' && lastName !== "" && age !== '' && username !== '' && 
+    password !== '' && confirmPassword !== '' && email !== '' && weight !== ''){
+      registerNewUser(firstName, lastName, username, password, age, weight, email, setLoginOut, navigate, setRegistrationErrorMessage)
+    }
   }
-  else setRegistrationErrorMessage('User already exists!')
-  }
- }
+ 
 
-const clickHandler = () =>{
-  }
+
 
 
   return (
@@ -65,7 +59,7 @@ const clickHandler = () =>{
         <input onChange = {handleChange} placeholder = "Age" value={age} type='number' />
         <input onChange = {handleChange} placeholder = "Weight" value={weight} type='number' />
         <input onChange = {handleChange} placeholder = "Email Address" value={email} />
-        <button type= 'submit' onClick={clickHandler} >Submit</button>
+        <button type= 'submit' >Submit</button>
         <p className='text-danger' >{registrationErrorMessage}</p>
         </form>
       </div>

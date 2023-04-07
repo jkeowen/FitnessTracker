@@ -61,7 +61,6 @@ const getAndVerifyUserByUsername = async(username, password) =>{
 			WHERE username = $1; 
 		`, [username]);
 		if(!user) return false;
-		console.log(password)
 		const matchPassword = await bcrypt.compare(password, user.password);
 		if(!matchPassword) {return false;}
 		delete user.password;

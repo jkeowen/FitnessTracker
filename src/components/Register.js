@@ -13,7 +13,6 @@ const [email, setEmail] = useState('')
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 const [confirmPassword, setConfirmPassword] = useState('');
-// const [ passwordMessage, setPasswordMessage ] = useState('')
 const [registrationErrorMessage, setRegistrationErrorMessage] = useState('');
 
 const navigate = useNavigate();

@@ -35,12 +35,11 @@ const getRoutines = async() => {
 			ON routines.type_id = exercise_type.id;
 		`)
 		const { rows: relations } = await client.query(`
-			SELECT id_routines, activities.name
+			SELECT id_routines, activities.name, count
 			FROM routines_activities
 			JOIN activities 
 			ON routines_activities.id_activities = activities.id; 
 		`);
-		// console.log(relations)
 			const usernames  = await getUsernames();
 		routines.forEach((routine)=>{
 			routine.creator = null;
@@ -51,7 +50,11 @@ const getRoutines = async() => {
 			routine.activities = []
 			for(let i = 0; i < relations.length; i++){
 				if(relations[i].id_routines === routine.id){
-					routine.activities.push(relations[i].name);
+					const activity = relations[i].name;
+					const count = relations[i].count;
+					const medObject = {}
+					medObject[activity] = count
+					routine.activities.push(medObject);
 				}
 			}
 		} )

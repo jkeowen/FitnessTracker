@@ -1,18 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import { getCurrentUser } from '../AjaxHelpers/Users';
+import getSingleUserRecords from '../AjaxHelpers/PersonalRecords';
 import Table from 'react-bootstrap/Table';
 const Profile = () =>{
 
   const [ userData, setUserData ] = useState({activities:[], routines:[]});
+  const [ records, setRecords ] = useState([]);
   useEffect(()=>{
     if(window.localStorage.getItem('username')){
-    getCurrentUser(window.localStorage.getItem('username'), setUserData )
+    getCurrentUser(window.localStorage.getItem('username'), setUserData );
     }
   }, [])
+
+  useEffect(()=>{
+    getSingleUserRecords(userData.id, setRecords)
+  },[userData])
   return(
     <div id='user-profile' className= 'p-4'>
       <Table striped bordered hover className='w-25'  > 
-        <thead className='text-center'>Hello, {userData.username}!
+        <thead>
+          <tr className='text-center' >
+            <td colSpan={2} >Hello, {userData.username}!</td>
+            </tr>
         <tr>
           <td>Name: </td>
           <td>{userData.first_name} {userData.last_name}</td>
@@ -21,7 +30,7 @@ const Profile = () =>{
         {
           Object.keys(userData).map((key, index)=> {
             return(
-              <tbody>
+              <tbody key={index}>
                 {
                   key !== 'id' && key !== 'is_active' && key !== 'activities' &&
                   key !== 'routines' && key !== 'first_name' && key !== 'last_name' ? 
@@ -48,8 +57,33 @@ const Profile = () =>{
         }
       </ul>
       </div>
+      {
+        records ? 
+        <Table bordered className='w-25' >
+          <thead><tr>
+            <td colSpan={2} className='text-center'>Your Current Records</td>
+            </tr>
+            </thead>
+          <tbody>
+            {
+              records.map((record, index)=>{
+                return(
+                  <tr key={index}>
+                    <td>{record.activity}</td>
+                    {record.record[record.record.length -1] ==='s'?
+                    <td>{record.record}</td> :
+                    <td>{record.record}lb</td>                      
+                    }
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </Table> : null
+          }
       </div>
     </div>
+    
     )
 }
 

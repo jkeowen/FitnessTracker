@@ -73,7 +73,8 @@ const buildTables = async() =>{
 															type_id INTEGER REFERENCES exercise_type(id),
 															description TEXT NOT NULL);
 	CREATE TABLE routines_activities(id_routines INTEGER REFERENCES routines(id),
-																			id_activities INTEGER REFERENCES activities(id));
+																	 id_activities INTEGER REFERENCES activities(id),
+																	 count INTEGER);
 	CREATE TABLE personal_records(id SERIAL PRIMARY KEY, 
 															user_id INTEGER REFERENCES users(id),
 															activity_id INTEGER REFERENCES activities(id),
@@ -134,11 +135,11 @@ const createRoutines = async() =>{
 
 const assignActivityToRoutines = async() =>{
 	console.log("ASSIGNING ACTIVITIES TO ROUTINES");
-	await assignActivityToRoutine(1,1);
-	await assignActivityToRoutine(2,2);
-	await assignActivityToRoutine(3,3);
-	await assignActivityToRoutine(4,4)
-	await assignActivityToRoutine(1,5)
+	await assignActivityToRoutine(1,1,5);
+	await assignActivityToRoutine(2,2, 8);
+	await assignActivityToRoutine(3,3, 1000);
+	await assignActivityToRoutine(4,4, 25)
+	await assignActivityToRoutine(1,5,1)
 	console.log('FINISHED ASSIGNING ACTIVITIES TO ROUTINES');
 }
 
@@ -184,7 +185,8 @@ const testDb = async()=>{
 	await addPersonalRecords();
 	await addActivityToUsers();
 	await addRoutinesToUsers();
-	
+	const routines = await getRoutines();
+	console.log(routines[0].activities)
 	console.log('DISCONNECTING FROM DB');
 	client.end();
 	console.log('FINISHED DISCONNECTING FROM DB');

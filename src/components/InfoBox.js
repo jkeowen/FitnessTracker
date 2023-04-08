@@ -6,6 +6,7 @@ import fetchAllRoutines from "../AjaxHelpers/Routines"
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faDumbbell, faMagnifyingGlass, faHeartPulse, faHandsHoldingCircle, faPersonHarassing } from "@fortawesome/free-solid-svg-icons";
 import Dropdown  from "react-bootstrap/Dropdown";
+import Button from "react-bootstrap/Button";
 import Search from "./Search";
 
 const InfoBox = () =>{
@@ -64,7 +65,11 @@ const InfoBox = () =>{
                     <h5 className="border-bottom border-3 border-dark text-center">{selection.name}</h5>
                     <div >Description: {selection.description}</div>
                     {
-                      selection.creator_id !== 0  ? <div>created by: {selection.creator}</div>:
+                      selection.creator_id !== 0  ?
+                      <div>  
+                        <div>created by: {selection.creator}</div>
+                        <Button>Delete</Button>
+                      </div>:
                       null
                     }
                     
@@ -89,7 +94,7 @@ const InfoBox = () =>{
                           {
                             selection.activities.map((activity, index) =>{
                               return(
-                                <Dropdown.Item key={index}>{activity}</Dropdown.Item>
+                                <Dropdown.Item key={index}>{Object.keys(activity)[0]} x {Object.values(activity)[0]}</Dropdown.Item>
                               )
                             })
                           }
@@ -97,6 +102,7 @@ const InfoBox = () =>{
                         </Dropdown>
                         :null
                       }
+                        
                         </div>
                     }
                   </div>

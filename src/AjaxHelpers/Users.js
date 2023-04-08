@@ -58,11 +58,11 @@ export const getCurrentUser = (username ,setter) =>{
   fetch(`/api/users/me/${username}`, {
     headers: {
       'Content-Type': 'application/json',
-      // 'Authorization': `Bearer ${window.localStorage.getItem('token')}`
     }
   }).then(response => response.json())
     .then(result=> {
-      setter(result.user)})
+      setter(result.user)
+    }).catch(console.error)
 }
 
 

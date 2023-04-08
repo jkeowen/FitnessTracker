@@ -31,6 +31,7 @@ const CreateNew = ({activities,
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ addedActivitiesId, setAddedActivitiesId ] = useState([]);
   const [ addedActivitiesNames, setAddedActivitiesNames ] = useState([]);
+  const [ addedActivitiesCount, setAddedActivitiesCount ] = useState([]);
  
 
   const handleClose = () => setShow(false);
@@ -84,6 +85,8 @@ const CreateNew = ({activities,
     else setIsPublicInput(false);
   }
 
+  
+
   const handleActivityAdd = (id, name) => {
     setAddedActivitiesId([...addedActivitiesId, id]);
     setAddedActivitiesNames([...addedActivitiesNames, name]);
@@ -133,7 +136,7 @@ const CreateNew = ({activities,
                 <ul>
                       {
                         addedActivitiesNames.map((name, index)=>{
-                          return <li key={index} >{name}</li>
+                          return <li key={index} >{name}<input type="number" className="w-25"/></li>
                         })
                       }
                     </ul>

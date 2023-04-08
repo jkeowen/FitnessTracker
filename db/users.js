@@ -76,6 +76,7 @@ const getUserByUsername = async( username ) =>{
 			SELECT * FROM users 
 			WHERE username = $1;
 		`, [username]);
+		if(user){
 		const { rows : activitiesRelations } = await client.query(`
 		SELECT activities.name
 		FROM activities
@@ -92,7 +93,7 @@ const getUserByUsername = async( username ) =>{
 `,);
 user.activities = activitiesRelations.map((relation)=> relation.name);
 user.routines = routinesRelations.map((relation)=> relation.name);
-		return user;
+		return user;}
 	}catch(err){
 		throw err;
 	}

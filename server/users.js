@@ -14,7 +14,6 @@ userRouter.use(bodyParser.json());
 userRouter.get('/me/:username', async(req, res, next) => {
   username = req.params.username
   console.log(username)
-  console.log('hit')
   const output = {
     success: false,
     error: null,

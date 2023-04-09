@@ -8,6 +8,7 @@ routinesActivitiesRouter.post('/', async(req, res, next) => {
     error: null,
     relation: null
   }
+  console.log(req.body)
   try{
     output.relation = await assignActivityToRoutine(...Object.values(req.body));
     output.success = true;

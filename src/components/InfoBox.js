@@ -16,7 +16,8 @@ const InfoBox = () =>{
   const [ routines, setRoutines] = useState([]);
   const [selected, setSelected] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [searchTerm, setSearchTerm] = useState("Search By")
+  const [searchTerm, setSearchTerm] = useState("Search By");
+  const [ isEditing, setIsEditing ] = useState(false);
 
 
   useEffect(()=>{
@@ -33,6 +34,11 @@ const InfoBox = () =>{
   useEffect(()=>{
     setSelected(routines)
   }, [routines]);
+
+  const editHandler = () =>{
+    if(isEditing) setIsEditing(false)
+    else setIsEditing(true)
+  }
 
 
   return(
@@ -72,7 +78,7 @@ const InfoBox = () =>{
                       </div>:
                       null
                     }
-                    
+
                     {
                       selected === activities ? 
                         <div>
@@ -94,15 +100,23 @@ const InfoBox = () =>{
                           {
                             selection.activities.map((activity, index) =>{
                               return(
-                                <Dropdown.Item key={index}>{Object.keys(activity)[0]} x {Object.values(activity)[0]}</Dropdown.Item>
+                                <Dropdown.Item key={index}>
+                                  {Object.keys(activity)[0]} x {Object.values(activity)[0]}
+                                  <Button onClick={editHandler} >Edit</Button>
+                                  {/* {
+                                    isEditing ? 
+                                    <form>
+
+                                    </form>
+                                  } */}
+                                  </Dropdown.Item>
                               )
                             })
                           }
                           </Dropdown.Menu>
                         </Dropdown>
                         :null
-                      }
-                        
+                      } 
                         </div>
                     }
                   </div>

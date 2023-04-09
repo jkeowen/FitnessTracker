@@ -5,6 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 const SideNav = ({loginOut, setLoginOut}) =>{
 
+
   const navigate = useNavigate();
   useEffect(()=>{
     window.localStorage.getItem('token') ? setLoginOut('Logout') :

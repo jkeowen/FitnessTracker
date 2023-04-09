@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useJwt } from "react-jwt";
+import React, { useState, useEffect } from "react";
 import { createNewActivity } from "../AjaxHelpers/Activities";
 import { createNewRoutine } from "../AjaxHelpers/Routines";
+import jwt_decode from 'jwt-decode';
 import makeActivityRoutinesRelation from "../AjaxHelpers/RoutinesActivities";
 import Button from "react-bootstrap/Button";
 import Modal from 'react-bootstrap/Modal';
@@ -15,10 +15,11 @@ const CreateNew = ({activities,
                     selected,
                     setSelected}) =>{
 
-  const { decodedToken } = useJwt(window.localStorage.getItem('token'));
+
+
+  const decoded = jwt_decode(window.localStorage.getItem('token'))
 
   const [ show, setShow ] = useState(false);
-  
   const [ nameInput, setNameInput ] = useState('');
   const [ instructionsInput, setInstructionsInput ] = useState('');
   const [ repsInput, setRepsInput ] = useState('');
@@ -31,6 +32,7 @@ const CreateNew = ({activities,
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ addedActivitiesId, setAddedActivitiesId ] = useState([]);
   const [ addedActivitiesNames, setAddedActivitiesNames ] = useState([]);
+  const [ currentCountInput, setCurrentCountInput ] = useState('');
   const [ addedActivitiesCount, setAddedActivitiesCount ] = useState([]);
  
 
@@ -49,10 +51,9 @@ const CreateNew = ({activities,
       }
       else if(selected === routines) {
         if(nameInput !== '' && descriptionInput !== '' && typeIdInput !== '' && isPublicInput !== ''){
-          console.log(decodedToken.id)
-        createNewRoutine(decodedToken.id, nameInput, descriptionInput, typeIdInput, isPublicInput, true, setRoutines, routines, addedActivitiesNames);
+        createNewRoutine(decoded.id, nameInput, descriptionInput, typeIdInput, isPublicInput, true, setRoutines, routines, addedActivitiesNames, addedActivitiesCount, decoded.username);
         for(let i = 0; i < addedActivitiesId.length; i++){
-          makeActivityRoutinesRelation(routines.length +1, addedActivitiesId[i]);
+          makeActivityRoutinesRelation(routines.length +1, addedActivitiesId[i], addedActivitiesCount[i]);
         }
         handleClose();
         }
@@ -90,7 +91,19 @@ const CreateNew = ({activities,
   const handleActivityAdd = (id, name) => {
     setAddedActivitiesId([...addedActivitiesId, id]);
     setAddedActivitiesNames([...addedActivitiesNames, name]);
+    setAddedActivitiesCount([...addedActivitiesCount, currentCountInput])
+    setCurrentCountInput('')
+
   }
+
+  const handleCountInput = (event) =>{
+    setCurrentCountInput(event.target.value);
+
+  }
+
+
+
+ console.log(addedActivitiesCount)
   return(
     <div id='create-new' >
       <Button variant="primary" onClick={handleShow}>
@@ -118,16 +131,18 @@ const CreateNew = ({activities,
                 label='Public?'
                 onChange={isPublicHandler}
                 />
-                <Dropdown>
+                <Dropdown autoClose="outside">
                   <Dropdown.Toggle>
                     Add Activities
                   </Dropdown.Toggle>
-                  <Dropdown.Menu>
+                  <Dropdown.Menu  >
                     
                     {
                       activities.filter((activity)=> !addedActivitiesId.includes(activity.id)).map((activity, index)=>{
-                         return <Dropdown.Item onClick={()=> handleActivityAdd(activity.id, activity.name)} key={index}>
+                         return <Dropdown.Item  key={index}>
                                   {activity.name}
+                                  <input type="number" className="w-25" onChange={handleCountInput}/> 
+                                  <Button onClick={()=>handleActivityAdd(activity.id, activity.name)}  >Set</Button>
                                 </Dropdown.Item>
                       })
                     }
@@ -136,7 +151,7 @@ const CreateNew = ({activities,
                 <ul>
                       {
                         addedActivitiesNames.map((name, index)=>{
-                          return <li key={index} >{name}<input type="number" className="w-25"/></li>
+                          return <li key={index} >{name}</li>
                         })
                       }
                     </ul>

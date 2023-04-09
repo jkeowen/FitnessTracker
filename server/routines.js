@@ -1,5 +1,4 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const { getRoutines,
@@ -33,7 +32,7 @@ routinesRouter.post('/', async(req, res, next) => {
     routine: null
   }
   try{
-   console.log('hit')
+   console.log(req.body)
     output.routine = await createRoutine(...Object.values(req.body))
     output.success = true
   }catch(err){

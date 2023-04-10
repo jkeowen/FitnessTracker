@@ -8,7 +8,8 @@ import Modal from 'react-bootstrap/Modal';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 
-const CreateNew = ({activities, 
+const CreateNew = ({currrentUser,
+                    activities, 
                     setActivities,
                     routines,
                     setRoutines,
@@ -18,7 +19,7 @@ const CreateNew = ({activities,
 
 
   const decoded = jwt_decode(window.localStorage.getItem('token'))
-
+  
   const [ show, setShow ] = useState(false);
   const [ nameInput, setNameInput ] = useState('');
   const [ instructionsInput, setInstructionsInput ] = useState('');
@@ -34,6 +35,7 @@ const CreateNew = ({activities,
   const [ addedActivitiesNames, setAddedActivitiesNames ] = useState([]);
   const [ currentCountInput, setCurrentCountInput ] = useState('');
   const [ addedActivitiesCount, setAddedActivitiesCount ] = useState([]);
+
  
 
   const handleClose = () => setShow(false);
@@ -41,9 +43,15 @@ const CreateNew = ({activities,
 
   const handleAdd = () =>{
     if(selected === activities){
+      for(let i = 0; i < selected.length; i++){
+        if(nameInput === selected[i].name){
+          setErrorMessage('That activity already exists')
+          return
+        }
+      }
       if(nameInput !== '' && instructionsInput !== '' && repsInput !== '' && setsInput !== '' && equipmentInput !== ''
         && typeIdInput !== '' && descriptionInput !== ''){
-      createNewActivity(nameInput, instructionsInput, repsInput, setsInput,
+      createNewActivity(nameInput, decoded.id, instructionsInput, repsInput, setsInput,
                   equipmentInput, typeIdInput, descriptionInput, setActivities, activities);
                   handleClose();
       }
@@ -101,9 +109,6 @@ const CreateNew = ({activities,
 
   }
 
-
-
- console.log(addedActivitiesCount)
   return(
     <div id='create-new' >
       <Button variant="primary" onClick={handleShow}>

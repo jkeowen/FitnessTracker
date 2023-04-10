@@ -92,6 +92,7 @@ const deleteRoutine = async( routineId ) => {
 		WHERE id = $1
 		RETURNING *;
 		`, [routineId]);
+		console.log(removed)
 		return removed
 	} catch (err) {
 		throw err;

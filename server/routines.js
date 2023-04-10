@@ -44,6 +44,12 @@ routinesRouter.post('/', async(req, res, next) => {
 
 routinesRouter.patch('/:routineId', async(req, res, next) => {
   const routineId = req.params.routineId;
+  const input = {};
+  for(let i = 0; i < req.body; i++){
+    if(Object.values(req.body)[i] !== ""){
+      input[Object.keys(req.body)[i]] = Object.values(req.body)[i];
+    }
+  }
   const output = {
     success: false,
     error: null,
@@ -66,8 +72,10 @@ routinesRouter.delete('/:routineId', async(req, res, next) => {
     error: null,
     routine: null
   }
+  console.log('hit', routineId)
 
 try{
+  console.log('in here')
   output.routine = await deleteRoutine(routineId);
   output.success = true;
 }catch(err){

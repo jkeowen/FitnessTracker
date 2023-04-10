@@ -1,15 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import { getCurrentUser } from '../AjaxHelpers/Users';
-import getSingleUserRecords from '../AjaxHelpers/PersonalRecords';
+import fetchAllRoutines from '../AjaxHelpers/Routines';
+import  getSingleUserRecords from '../AjaxHelpers/PersonalRecords' 
 import Table from 'react-bootstrap/Table';
 const Profile = () =>{
 
   const [ userData, setUserData ] = useState({activities:[], routines:[]});
   const [ records, setRecords ] = useState([]);
+  const [ routines, setRoutines ] = useState([]);
   useEffect(()=>{
     if(window.localStorage.getItem('username')){
-    getCurrentUser(window.localStorage.getItem('username'), setUserData );
+    getCurrentUser(setUserData );
     }
+    fetchAllRoutines(setRoutines);
   }, [])
 
   useEffect(()=>{
@@ -49,9 +52,34 @@ const Profile = () =>{
       <h3>Current Activities</h3>
       <ul>
         {
-          userData.activities.map((personalSelected, index)=>{
+          userData.activities.map((activity, index)=>{
             return(
-              <li key={index}>{personalSelected}</li>
+              <li key={index}>{activity}</li>
+            )
+          })
+        }
+      </ul>
+      </div>
+      <div>
+      <h3>Current Participated in Routines</h3>
+      <ul>
+
+        {
+          userData.routines.map((routine, index)=>{
+            return(
+              <li key={index}>{routine}</li>
+            )
+          })
+        }
+      </ul>
+      </div>
+      <div>
+      <h3>Your Created Routines</h3>
+      <ul>
+        {
+          routines.filter((routine)=> routine.id === userData.id).map((routine, index)=>{
+            return(
+              <li key={index}>{routine.name}</li>
             )
           })
         }
@@ -82,6 +110,9 @@ const Profile = () =>{
         </Table> : null
           }
       </div>
+      {
+
+      }
     </div>
     
     )

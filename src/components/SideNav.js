@@ -31,8 +31,12 @@ const SideNav = ({loginOut, setLoginOut}) =>{
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto flex flex-lg-column">
             <Link to="/dashboard" className="text-decoration-none">Dashboard</Link>
-            <Link to="/profile" className="text-decoration-none" >Profile</Link>
-            <Link to="/community" className="text-decoration-none" >Community</Link>
+            {
+              window.localStorage.getItem('token') ? 
+              <Link to="/profile" className="text-decoration-none" >Profile</Link> : null
+
+            }
+            {/* <Link to="/community" className="text-decoration-none" >Community</Link> */}
             {
             <Link to="/login" onClick={handleLoginOut} className="text-decoration-none" >{loginOut}</Link>
             } 

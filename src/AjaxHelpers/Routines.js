@@ -1,3 +1,4 @@
+
 const axios = require('axios');
 
 
@@ -22,6 +23,34 @@ export const createNewRoutine = (creator_id, name, description, typeId, isPublic
     response.data.routine.creator = username;
     if(response.data.success) setter([...currentValues, response.data.routine])
   })
+}
+
+export const editRoutine = (id, name, description, setter ) =>{
+  fetch(`api/Routines/${id}`,{
+    method:'PATCH',
+    headers:{
+      "Content-Type": 'application/json'
+    },
+    body: JSON.stringify({
+      name,
+      description
+    })
+  }).then(response => response.json())
+    .then(result =>{
+      console.log(result)
+    }).catch(console.error)
+}
+
+export const deleteRoutine = (routineId, currentValues, setter) =>{
+  fetch(`api/Routines/${routineId}`,{
+    method:'DELETE',
+    headers:{
+      'Content-Type': 'application/json'
+    }
+  }).then(response => response.json())
+    .then(result => {
+     setter(currentValues.filter((value)=> value.id !== routineId))
+    }).catch(console.error);
 }
 
 export default fetchAllRoutines;

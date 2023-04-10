@@ -20,7 +20,7 @@ const Search = ({ setSearchInput, selected, searchTerm, setSearchTerm}) => {
       </Dropdown.Toggle>
       <Dropdown.Menu>
       {
-        Object.keys(selected[0]).filter((key)=> key !== 'id' && key !== "creator_id" && key !== "icon" && key !== "reps" && key !== "sets" && key !== "is_active" && key !== "is_public").map((key, index) =>{
+        Object.keys(selected[0]).filter((key)=> key !== 'id' && key !== "creator_id" && key !== "icon" && key !== "reps" && key !== "sets" && key !== "is_active" && key !== "is_public" && key !== 'activities' && key !== 'creator').map((key, index) =>{
           return(
             <Dropdown.Item className="text-capitalize" onClick = {()=> setSearchTerm(key)} key={index}>{key}</Dropdown.Item>
           )

@@ -2,11 +2,14 @@ import React, {useState, useEffect} from "react";
 import CreateNew from "./CreateNew";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import fetchAllActivities from "../AjaxHelpers/Activities";
-import fetchAllRoutines from "../AjaxHelpers/Routines"
+import fetchAllRoutines, {deleteRoutine} from "../AjaxHelpers/Routines";
+import { editRoutine } from "../AjaxHelpers/Routines";
+import { getCurrentUser } from "../AjaxHelpers/Users";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faDumbbell, faMagnifyingGlass, faHeartPulse, faHandsHoldingCircle, faPersonHarassing } from "@fortawesome/free-solid-svg-icons";
 import Dropdown  from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form"
 import Search from "./Search";
 
 const InfoBox = () =>{
@@ -17,7 +20,12 @@ const InfoBox = () =>{
   const [selected, setSelected] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("Search By");
-  const [ isEditing, setIsEditing ] = useState(false);
+  const [ currentEditing, setCurrentEditing ] = useState({});
+  const [currentUser, setCurrentUser ] = useState({});
+  const [ editNameInput, setEditNameInput ] = useState('');
+  const [ editDescriptionInput, setEditDescriptionInput ] = useState('');
+  const [ activeBold, setActiveBold ] = useState('');
+  const [ routinesBold, setRoutinesBold ] = useState('');
 
 
   useEffect(()=>{
@@ -25,8 +33,8 @@ const InfoBox = () =>{
     setSelected(routines);
     fetchAllActivities(setActivities);
     setSearchTerm("Search By")
+    getCurrentUser(setCurrentUser);
   },[])
-
   useEffect(()=>{
     setSelected(activities);
   }, [activities])
@@ -35,9 +43,41 @@ const InfoBox = () =>{
     setSelected(routines)
   }, [routines]);
 
-  const editHandler = () =>{
-    if(isEditing) setIsEditing(false)
-    else setIsEditing(true)
+  useEffect(()=>{
+    if(selected === routines){
+      setActiveBold('')
+      setRoutinesBold('font-weight-bold')
+    }
+    else if(selected === activities){
+      setActiveBold('font-weight-bold');
+      setRoutinesBold('');
+    }
+  }, [selected])
+
+  const handleEdit = (event) =>{
+    if(event.target.placeholder === "edit name") setEditNameInput(event.target.value);
+    else if(event.target.placeholder === "edit description") setEditDescriptionInput(event.target.value);
+    else  setEditCountInput(event.target.value)
+  }
+  const handleCancel = () =>{
+    setCurrentEditing({});
+    setEditNameInput('');
+    setEditDescriptionInput('');
+  }
+
+  const handleSubmitEdit = (routineId) =>{
+    editRoutine(routineId, editNameInput, editDescriptionInput, );
+    setCurrentEditing({})
+  }
+
+  const handleEdited = (current) =>{
+    setCurrentEditing(current);
+    setEditNameInput(current.name);
+    setEditDescriptionInput(current.description);
+  }
+
+  const deleteHandler = (id) =>{
+  deleteRoutine(id, routines, setRoutines);    
   }
 
 
@@ -46,18 +86,18 @@ const InfoBox = () =>{
     
       <div className="lavander-bg rounded vh-50">
         <div className="d-flex justify-content-around border border-dark rounded mb-2">
-          <div onClick={()=> setSelected(activities)}>Activities</div>
-          <div onClick={()=> setSelected(routines)} >Routines</div>
+          <div className={activeBold} onClick={()=> setSelected(activities)}>Activities</div>
+          <div className={routinesBold} onClick={()=> setSelected(routines)} >Routines</div>
         </div>
        < Search setSearchInput = {setSearchInput} selected = {selected} searchTerm = {searchTerm} setSearchTerm = {setSearchTerm} />
         {
           window.localStorage.getItem('token') ? 
-          <CreateNew  activities={activities} setActivities={setActivities} routines={routines} setRoutines={setRoutines} selected={selected} 
+          <CreateNew currentUser={currentUser} activities={activities} setActivities={setActivities} routines={routines} setRoutines={setRoutines} selected={selected} 
           setSelected={setSelected}/> : null
         }
        <div className="scroll">
          { 
-          selected.filter((selection) => {
+          selected.filter((selected)=> selected.is_active === true).filter((selection) => {
             if(!searchInput) {
               return selection;
             } else if (selection[searchTerm].toLowerCase().startsWith(searchInput.toLowerCase())){
@@ -74,7 +114,6 @@ const InfoBox = () =>{
                       selection.creator_id !== 0  ?
                       <div>  
                         <div>created by: {selection.creator}</div>
-                        <Button>Delete</Button>
                       </div>:
                       null
                     }
@@ -92,7 +131,7 @@ const InfoBox = () =>{
                           
                           {
                             selection.activities ?
-                        <Dropdown>
+                        <Dropdown autoClose="outside">
                           <Dropdown.Toggle>
                             Activities
                           </Dropdown.Toggle>
@@ -102,13 +141,6 @@ const InfoBox = () =>{
                               return(
                                 <Dropdown.Item key={index}>
                                   {Object.keys(activity)[0]} x {Object.values(activity)[0]}
-                                  <Button onClick={editHandler} >Edit</Button>
-                                  {/* {
-                                    isEditing ? 
-                                    <form>
-
-                                    </form>
-                                  } */}
                                   </Dropdown.Item>
                               )
                             })
@@ -117,6 +149,24 @@ const InfoBox = () =>{
                         </Dropdown>
                         :null
                       } 
+
+                        {
+                         currentUser && selection.creator_id === currentUser.id ?
+                          <div>  
+                       {  
+                          currentEditing === selection && selection.name ? 
+                            <Form  >
+                              <input  placeholder="edit name" value={editNameInput} onChange={handleEdit}/>
+                              <input placeholder="edit description" value={editDescriptionInput} onChange={handleEdit} />
+                              <Button type="sumbit" onClick={()=>handleSubmitEdit(selection.id)} >Submit</Button>
+                              <Button variant="warning" onClick={handleCancel} > Cancel</Button>
+                            </Form> :
+                            <Button onClick={()=>handleEdited(selection)}>Edit</Button>           
+                        }
+                          <Button onClick={()=>deleteHandler(selection.id)} variant="warning" >Delete</Button>
+
+                          </div>: null
+                        }
                         </div>
                     }
                   </div>

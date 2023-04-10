@@ -9,8 +9,8 @@ const Dashboard = () =>{
     <div id="dashboard" className="d-flex flex-row m-3">
       <InfoBox />
       <div className="d-flex flex-column align-items-center ml-2">
-      <HightlightsBox />
-      <Graph />
+      {/* <HightlightsBox />
+      <Graph /> */}
       </div>
     </div>
   )

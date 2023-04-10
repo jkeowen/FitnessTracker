@@ -25,7 +25,9 @@ activitiesRouter.post('/', async(req, res, next)=>{
 		success: false,
 		error: null,
 		newActivity: null
+
 	}
+	console.log(req.body)
 	try{
 	const newActivity = await createActivity(...Object.values(req.body));
 	output.success = true;

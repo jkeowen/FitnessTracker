@@ -71,7 +71,8 @@ const buildTables = async() =>{
 															sets VARCHAR(8) NOT NULL,
 															equipment VARCHAR(25) NOT NULL,
 															type_id INTEGER REFERENCES exercise_type(id),
-															description TEXT NOT NULL);
+															description TEXT NOT NULL,
+															is_active BOOLEAN);
 	CREATE TABLE routines_activities(id_routines INTEGER REFERENCES routines(id),
 																	 id_activities INTEGER REFERENCES activities(id),
 																	 count INTEGER);
@@ -107,11 +108,11 @@ const createUsers = async() =>{
 
 const createActivities = async() =>{
 	console.log('CREATING ACTIVITIES')
-	await createActivity('Bench Press', 0, 'LIFT THE IRON PLACEHOLDER', 10, 5, 'Bench, Barbell', 2, 'Uhh its a bench press');
-	await createActivity('Sprints', 0, 'Run fast for a short distance', 5, 5, 'Track, feet', 1, 'Run real fast, be explosive, focus on technique');
-	await createActivity('Holding head underwater', 3, 'See how long you can survive without oxygen', 40, 5, 'head, water bucket', 3, 'Try not to suffocate!');
-	await createActivity('Yoga', 0, 'Bendy bend', 1, 1, 'yoga mat', 4, 'bend and stuff');
-	await createActivity('Squats', 1, 'Squat with bar and plates', 5, 5, 'bar and plates', 2, 'its a squat')
+	await createActivity('Bench Press', 0, 'LIFT THE IRON PLACEHOLDER', 10, 5, 'Bench, Barbell', 2, 'Uhh its a bench press', true);
+	await createActivity('Sprints', 0, 'Run fast for a short distance', 5, 5, 'Track, feet', 1, 'Run real fast, be explosive, focus on technique', true);
+	await createActivity('Holding head underwater', 3, 'See how long you can survive without oxygen', 40, 5, 'head, water bucket', 3, 'Try not to suffocate!', true);
+	await createActivity('Yoga', 0, 'Bendy bend', 1, 1, 'yoga mat', 4, 'bend and stuff', true);
+	await createActivity('Squats', 1, 'Squat with bar and plates', 5, 5, 'bar and plates', 2, 'its a squat', true)
 	console.log('FINISHED CREATING ACTIVITIES')
 };
 

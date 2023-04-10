@@ -11,9 +11,9 @@ const fetchAllActivities = async(setter) =>{
   }
 };
 
-export const createNewActivity = (name, instructions, reps, sets, equipment, type_id, desciption, setter, currentValues) =>{
+export const createNewActivity = (name, id, instructions, reps, sets, equipment, type_id, desciption, setter, currentValues) =>{
   axios.post('/api/activities',{
-    name, instructions, reps, sets, equipment, type_id, desciption
+    name, id, instructions, reps, sets, equipment, type_id, desciption
   })
   .then((response)=>{
     if(response.data.success) setter([...currentValues, response.data.newActivity])

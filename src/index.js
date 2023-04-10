@@ -25,8 +25,8 @@ const App = () => {
         <Route path='/login' element={<Login setLoginOut={setLoginOut}/>} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/profile' element={<Profile />} />
-        <Route path='/community' element={<Community />} />
-        <Route path='/settings' element={<Settings />} />
+        {/* <Route path='/community' element={<Community />} /> */}
+        {/* <Route path='/settings' element={<Settings />} /> */}
 
       </Routes>
         

@@ -148,6 +148,7 @@ const createUser = async(firstName, lastName, username, password, age, weight, e
 
 
 
+
 module.exports = {
   createUser,
   getUsers,

@@ -54,8 +54,8 @@ export const userLogin = async(username, password, setLoginOut, navigator, error
 }
 
 
-export const getCurrentUser = (username ,setter) =>{
-  fetch(`/api/users/me/${username}`, {
+export const getCurrentUser = (setter) =>{
+  fetch(`/api/users/me/${window.localStorage.getItem('username')}`, {
     headers: {
       'Content-Type': 'application/json',
     }
